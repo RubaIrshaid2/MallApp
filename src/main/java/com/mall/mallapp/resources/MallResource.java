@@ -36,7 +36,6 @@ public class MallResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Mall addMall(Mall mall)
     {
-        System.out.println("dfkdslkfjsl");
         return ms.add_Mall(mall);
     }
 
@@ -55,6 +54,13 @@ public class MallResource {
     public String deleteMall(@PathParam("mall_id") int id)
     {
         return ms.deleteMall(id);
+    }
+
+    @Path("/{mall_id}/floors")
+
+    public FloorResource getFloorResource()
+    {
+        return new FloorResource();
     }
 
 }
