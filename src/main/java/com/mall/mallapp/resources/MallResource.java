@@ -7,11 +7,9 @@ import com.mall.mallapp.DBConfig.AerospikeDB;
 import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.service.MallService;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.xml.soap.Text;
 
 import java.util.List;
 
@@ -31,6 +29,32 @@ public class MallResource {
     public Mall getMall(@PathParam("mall_id") int mall_id)
     {
         return ms.getMall(mall_id);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Mall addMall(Mall mall)
+    {
+        System.out.println("dfkdslkfjsl");
+        return ms.add_Mall(mall);
+    }
+
+    @PUT
+    @Path("/{mall_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateMall(@PathParam("mall_id") int id ,  Mall mall)
+    {
+        ms.updateMall(id , mall);
+    }
+
+    @DELETE
+    @Path("/{mall_id}")
+    @Produces("text/plain")
+    public String deleteMall(@PathParam("mall_id") int id)
+    {
+        return ms.deleteMall(id);
     }
 
 }
