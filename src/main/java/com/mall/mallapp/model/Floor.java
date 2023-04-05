@@ -6,16 +6,10 @@ public class Floor {
     int mall_id;
     int floor_number;
 
-    public int getMall_id() {
-        return mall_id;
-    }
-
-    public void setMall_id(int mall_id) {
-        this.mall_id = mall_id;
-    }
-
     String category;
     int number_of_shops;
+
+    public Floor(){}
 
     public Floor(int id,int mall_id , int floor_number, String category, int number_of_shops) {
         this.id = id;
@@ -31,6 +25,14 @@ public class Floor {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getMall_id() {
+        return mall_id;
+    }
+
+    public void setMall_id(int mall_id) {
+        this.mall_id = mall_id;
     }
 
     public int getFloor_number() {

@@ -57,7 +57,6 @@ public class MallResource {
     }
 
     @Path("/{mall_id}/floors")
-
     public FloorResource getFloorResource()
     {
         return new FloorResource();
