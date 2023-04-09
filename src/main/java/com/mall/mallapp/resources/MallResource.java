@@ -1,9 +1,5 @@
 package com.mall.mallapp.resources;
 
-import com.aerospike.client.AerospikeClient;
-import com.aerospike.client.Key;
-import com.aerospike.client.Record;
-import com.mall.mallapp.DBConfig.AerospikeDB;
 import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.service.MallService;
 

@@ -1,9 +1,7 @@
 package com.mall.mallapp.resources;
 
 import com.mall.mallapp.model.Floor;
-import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.service.FloorService;
-import com.mall.mallapp.service.MallService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -16,7 +14,6 @@ public class FloorResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Floor> getFloors(@PathParam("mall_id") int mall_id){
-        System.out.println("pppppppppp");
         return fs.getFloors(mall_id);
     }
 
@@ -25,7 +22,6 @@ public class FloorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Floor addFloor( Floor floor)
     {
-        System.out.println("kkkkkkkkkkkkkkkkkkkkk");
         return fs.add_Floor(floor);
     }
 
@@ -54,4 +50,9 @@ public class FloorResource {
         return fs.deleteFloor(id);
     }
 
+    @Path("/{floor_id}/shops")
+    public ShopResource GetShopeResource()
+    {
+        return new ShopResource();
+    }
 }

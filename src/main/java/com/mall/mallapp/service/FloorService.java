@@ -29,14 +29,11 @@ public class FloorService {
 
         statement.setNamespace(namespace);
         statement.setSetName(set);
-        System.out.println("lllllllllllllllllllllll");
         RecordSet records = AerospikeDB.getClient().query(null , statement);
-        System.out.println("mmmmmmmmmmmmmm");
         try{
             while (records.next()) {
                 Key key = records.getKey();
                 Record record = records.getRecord();
-                System.out.println("Key: " + key.userKey.toString() + " - " + record.toString());
                 if(record.getInt("mall_id") == mall_id) {
                     Floor newFloor = new Floor(key.userKey.toInteger(), record.getInt("mall_id"), record.getInt("floor_number"), record.getString("category"), record.getInt("NumOfShops"));
                     FloorList.add(newFloor);
@@ -66,7 +63,6 @@ public class FloorService {
             while (records.next()) {
                 Key key = records.getKey();
                 Record record = records.getRecord();
-
                 Floor newFloor = new Floor(key.userKey.toInteger(), record.getInt("mall_id"), record.getInt("floor_number"), record.getString("category"), record.getInt("NumOfShops"));
                 FloorList.add(newFloor);
             }
@@ -88,14 +84,7 @@ public class FloorService {
         writePolicy.sendKey = true;
         Key key = new Key(namespace , set, 4);
 
-        System.out.println("fsdkldjf");
-        Bin floor_number = new Bin("floor_number" , floor.getFloor_number());
-        Bin category = new Bin("category" , floor.getCategory());
-        Bin NumOfShops = new Bin ("NumOfShops" , floor.getNumber_of_shops());
-        Bin mall_id = new Bin("mall_id", 1);
-        System.out.println("fffffffffffffffffffff");
-        AerospikeDB.getClient().put(writePolicy,key,floor_number,category,NumOfShops,mall_id);
-        System.out.println("gggggggggggggggggggggggggg");
+        bins_update_create(floor, key, writePolicy);
         return floor;
     }
 
@@ -114,9 +103,7 @@ public class FloorService {
         Key key = new Key(namespace,set, id);
         WritePolicy deletePolicy = new WritePolicy();
         deletePolicy.durableDelete = true;
-        System.out.println("lkjgx");
         AerospikeDB.getClient().delete(null , key);
-        System.out.println("sldfslkfjsld");
         return "Deleted successfully";
     }
     private void bins_update_create(Floor floor, Key key, WritePolicy Policy) {

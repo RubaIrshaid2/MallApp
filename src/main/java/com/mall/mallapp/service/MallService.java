@@ -38,7 +38,6 @@ public class MallService {
             while (records.next()) {
                 Key key = records.getKey();
                 Record record = records.getRecord();
-                System.out.println("Key: " + key.userKey.toString() + " - " + record.toString());
                 Mall newMall = new Mall(key.userKey.toInteger(),record.getString("name"),record.getString("address"),record.getInt("NumOfFloors"), record.getString("desc"));
                 mallList.add(newMall);
             }
@@ -86,9 +85,7 @@ public class MallService {
         Key key = new Key(namespace,set, id);
         WritePolicy deletePolicy = new WritePolicy();
         deletePolicy.durableDelete = true;
-        System.out.println("lkjgx");
         AerospikeDB.getClient().delete(null , key);
-        System.out.println("sldfslkfjsld");
         return "Deleted successfully";
     }
 
