@@ -1,117 +1,62 @@
 package com.mall.mallapp.service;
 
-import com.aerospike.client.AerospikeException;
-import com.aerospike.client.Bin;
-import com.aerospike.client.Key;
-import com.aerospike.client.Record;
-import com.aerospike.client.policy.RecordExistsAction;
-import com.aerospike.client.policy.WritePolicy;
-import com.aerospike.client.query.RecordSet;
-import com.aerospike.client.query.Statement;
-import com.mall.mallapp.DBConfig.AerospikeDB;
+import com.mall.mallapp.DTO.FloorDTO;
+import com.mall.mallapp.exception.NotFoundException;
+import com.mall.mallapp.mapper.FloorMapperImpl;
 import com.mall.mallapp.model.Floor;
 import com.mall.mallapp.model.Mall;
+import com.mall.mallapp.reposotry.FloorRepo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FloorService {
 
-    String namespace = "test";
-    String set = "floor";
-    int id = 3 ;
-    public List<Floor> getFloors(int mall_id)
+    FloorRepo floorRepo = new FloorRepo();
+    FloorMapperImpl floorMapper = new FloorMapperImpl();
+    public List<FloorDTO> getFloors(int mall_id) throws NotFoundException
     {
-        List<Floor> FloorList = new ArrayList<Floor>() ;
+        List<FloorDTO> dtoList = new ArrayList<>();
+        List<Floor> floorList = floorRepo.getFloors(mall_id);
 
-        Statement statement = new Statement();
+        for(Floor m : floorList)
+            dtoList.add(floorMapper.ToDto(m));
 
-        statement.setNamespace(namespace);
-        statement.setSetName(set);
-        RecordSet records = AerospikeDB.getClient().query(null , statement);
-        try{
-            while (records.next()) {
-                Key key = records.getKey();
-                Record record = records.getRecord();
-                if(record.getInt("mall_id") == mall_id) {
-                    Floor newFloor = new Floor(key.userKey.toInteger(), record.getInt("mall_id"), record.getInt("floor_number"), record.getString("category"), record.getInt("NumOfShops"));
-                    FloorList.add(newFloor);
-                }
-            }
-            records.close();
-        }
-        catch (AerospikeException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        return FloorList;
+        if(floorList.size() == 0)
+            throw new NotFoundException("Error : No Floors");
+        return dtoList;
     }
 
-    public Floor getFloor(int mall_id , int floor_number)
+    public FloorDTO getFloor(int mall_id , int floor_number) throws IllegalArgumentException,NotFoundException
     {
-
-        List<Floor> FloorList = new ArrayList<Floor>() ;
-
-        Statement statement = new Statement();
-
-        statement.setNamespace(namespace);
-        statement.setSetName(set);
-
-        RecordSet records = AerospikeDB.getClient().query(null , statement);
-
-        try{
-            while (records.next()) {
-                Key key = records.getKey();
-                Record record = records.getRecord();
-                Floor newFloor = new Floor(key.userKey.toInteger(), record.getInt("mall_id"), record.getInt("floor_number"), record.getString("category"), record.getInt("NumOfShops"));
-                FloorList.add(newFloor);
-            }
-            records.close();
-        }
-        catch (AerospikeException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        List<Floor> filteredList = FloorList.stream()
-                .filter(floor -> floor.getMall_id() == mall_id && floor.getFloor_number() == floor_number)
-                .collect(Collectors.toList());
-        return filteredList.get(0);
-    }
-
-    public Floor add_Floor(Floor floor)
-    {
-        floor.setId(4);
-        WritePolicy writePolicy = new WritePolicy();
-        writePolicy.sendKey = true;
-        Key key = new Key(namespace , set, 4);
-
-        bins_update_create(floor, key, writePolicy);
+        if(mall_id < 1 || floor_number < 1)
+            throw new IllegalArgumentException("mall id or floor number is not correct");
+        FloorDTO floor = floorMapper.ToDto(floorRepo.getFloor(mall_id, floor_number));
+        if(floor == null)
+            throw new NotFoundException("Error : the floor not found");
         return floor;
     }
 
-    public void updateFloor(int id , Floor floor)
+
+    public FloorDTO add_Floor(int Mall_id , FloorDTO floor) throws IllegalArgumentException
     {
-        Key key = new Key(namespace, set, id);
-
-        WritePolicy updatePolicy = new WritePolicy();
-        updatePolicy.recordExistsAction = RecordExistsAction.UPDATE_ONLY;
-
-        bins_update_create(floor, key, updatePolicy);
+        if(Mall_id <1 || floor.getFloor_number()<1 || floor.getCategory().isEmpty())
+            throw new IllegalArgumentException("Error : mall id or data is not correct");
+        return floorMapper.ToDto(floorRepo.add_Floor(Mall_id , floorMapper.ToEntity(floor)));
     }
 
-    public String deleteFloor(int id)
+    public void updateFloor(int mall_id , int id , FloorDTO floor) throws IllegalArgumentException
     {
-        Key key = new Key(namespace,set, id);
-        WritePolicy deletePolicy = new WritePolicy();
-        deletePolicy.durableDelete = true;
-        AerospikeDB.getClient().delete(null , key);
-        return "Deleted successfully";
+        if(id <1 || floor.getFloor_number()<1 || floor.getCategory().isEmpty())
+            throw new IllegalArgumentException("Error : mall id or data is not correct");
+        floorRepo.updateFloor(mall_id , id,floorMapper.ToEntity(floor));
     }
-    private void bins_update_create(Floor floor, Key key, WritePolicy Policy) {
-        Bin floor_number = new Bin("floor_number" , floor.getFloor_number());
-        Bin category = new Bin("category" , floor.getCategory());
-        Bin NumOfShops = new Bin ("NumOfShops" , floor.getNumber_of_shops());
-        Bin mall_id = new Bin("mall_id", floor.getMall_id());
 
-        AerospikeDB.getClient().put(Policy,key,floor_number,category,NumOfShops,mall_id);
+    public String deleteFloor(int id)throws IllegalArgumentException
+    {
+        if (id < 1 ) {
+            throw new IllegalArgumentException("incorrect id");
+        }
+        return floorRepo.deleteFloor(id);
     }
 }

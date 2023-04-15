@@ -8,6 +8,7 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         url "https://www.aerospike.com/enterprise/download/client/java/latest/artifact/maven"
     }
@@ -15,6 +16,7 @@ repositories {
 
 ext {
     junitVersion = '5.9.1'
+    mapstructVersion = "1.5.3.Final"
 }
 
 sourceCompatibility = '1.8'
@@ -36,9 +38,26 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
+    //map struct
+    implementation "org.mapstruct:mapstruct:1.5.3.Final"
+
+    testImplementation "org.testng:testng:6.10", "org.easytesting:fest-assert:1.4"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
+
+    implementation 'com.google.code.gson:gson:2.8.9'
 
 }
 
 test {
     useJUnitPlatform()
+}
+
+compileJava {
+    options.annotationProcessorPath = configurations.annotationProcessor
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
 }

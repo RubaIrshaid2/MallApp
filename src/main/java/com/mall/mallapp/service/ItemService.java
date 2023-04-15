@@ -1,97 +1,60 @@
 package com.mall.mallapp.service;
 
-import com.aerospike.client.AerospikeException;
-import com.aerospike.client.Bin;
-import com.aerospike.client.Key;
-import com.aerospike.client.Record;
-import com.aerospike.client.policy.RecordExistsAction;
-import com.aerospike.client.policy.WritePolicy;
-import com.aerospike.client.query.RecordSet;
-import com.aerospike.client.query.Statement;
-import com.mall.mallapp.DBConfig.AerospikeDB;
+import com.mall.mallapp.DTO.ItemDTO;
+import com.mall.mallapp.exception.NotFoundException;
+import com.mall.mallapp.mapper.ItemMapperImpl;
 import com.mall.mallapp.model.Item;
-import com.mall.mallapp.model.Shop;
+import com.mall.mallapp.reposotry.ItemRepo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ItemService {
 
-    String namespace = "test";
-    String set = "item";
-    public List<Item> getItems(int shop_id) {
+    ItemRepo itemRepo = new ItemRepo();
+    ItemMapperImpl itemMapper = new ItemMapperImpl();
 
-        List<Item> ItemList = new ArrayList<Item>() ;
+    public List<ItemDTO> getItems(int shop_id) throws NotFoundException {
 
-        Statement statement = new Statement();
+        List<Item> itemList = itemRepo.getItems(shop_id);
+        List<ItemDTO> DTOList = new ArrayList<>();
 
-        statement.setNamespace(namespace);
-        statement.setSetName(set);
-        RecordSet records = AerospikeDB.getClient().query(null , statement);
-        try{
-            while (records.next()) {
-                Key key = records.getKey();
-                Record record = records.getRecord();
-                Item newItem = new Item(key.userKey.toInteger(), record.getInt("shop_id"), record.getString("name"), record.getInt("price"), record.getString("desc"),record.getInt("sale_pers"));
-                ItemList.add(newItem);
-            }
-            records.close();
-        }
-        catch (AerospikeException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        List<Item> filteredList = ItemList.stream()
-                .filter(item -> item.getShop_id() == shop_id)
-                .collect(Collectors.toList());
-        return filteredList;
+        for(Item i : itemList)
+            DTOList.add(itemMapper.ToDto(i));
+
+        if(itemList.size()==0)
+            throw new NotFoundException("Error : No Items in this shop");
+        return DTOList;
     }
 
-    public Item add_item(int shop_id ,Item item)
+    public ItemDTO getItem(int item_id) throws IllegalArgumentException,NotFoundException
     {
-        item.setId(2);
-        WritePolicy writePolicy = new WritePolicy();
-        writePolicy.sendKey = true;
-        Key key = new Key(namespace , set, 2 );
-        item.setShop_id(shop_id);
-        bins_update_create(item, key, writePolicy );
-        return item;
+        if(item_id < 1 )
+            throw new IllegalArgumentException("item id is not correct");
+        ItemDTO iDto =  itemMapper.ToDto(itemRepo.getItem(item_id));
+        if(iDto == null)
+            throw new NotFoundException("Error : the Item not found");
+        return iDto;
+    }
+    public ItemDTO add_item(int shop_id ,ItemDTO item) throws IllegalArgumentException
+    {
+        if(shop_id < 1 || item.getName().isEmpty() || item.getName()==null)
+            throw new IllegalArgumentException("shop id or data of the new item is not correct");
+        return itemMapper.ToDto(itemRepo.add_item(shop_id, itemMapper.ToEntity(item)));
     }
 
-    public Item getItem(int item_id)
+    public void updateItem(int id ,int shop_id , ItemDTO item)
     {
-        Key key = new Key(namespace,set, item_id);
-        Record record = AerospikeDB.getClient().get(null, key);
-        if(record==null) {
-            return null;
-        }
-        return new Item(key.userKey.toInteger(), record.getInt("shop_id"), record.getString("name"), record.getInt("price"), record.getString("desc"),record.getInt("sale_pers"));
-    }
-
-    public void updateItem(int id , Item item)
-    {
-        Key key = new Key(namespace, set, id);
-
-        WritePolicy updatePolicy = new WritePolicy();
-        updatePolicy.recordExistsAction = RecordExistsAction.UPDATE_ONLY;
-
-        bins_update_create(item, key, updatePolicy);
+        if(id < 1 || shop_id< 1 || item.getName().isEmpty())
+            throw new IllegalArgumentException("shop or item id or some data is not correct");
+        itemRepo.updateItem(id, shop_id , itemMapper.ToEntity(item));
     }
 
     public String deleteItem(int id)
     {
-        Key key = new Key(namespace,set, id);
-        WritePolicy deletePolicy = new WritePolicy();
-        deletePolicy.durableDelete = true;
-        AerospikeDB.getClient().delete(null , key);
-        return "Deleted successfully";
-    }
-    private void bins_update_create(Item item, Key key, WritePolicy Policy) {
-        Bin shopId = new Bin("shop_id" , item.getShop_id());
-        Bin name = new Bin("name" , item.getName());
-        Bin price = new Bin ("price" , item.getPrice());
-        Bin desc = new Bin("desc", item.getDesc());
-        Bin sale_pers = new Bin("sale_pers" , item.getSale_pers());
-        AerospikeDB.getClient().put(Policy,key,shopId,name,price,desc,sale_pers);
+        if (id < 1 ) {
+            throw new IllegalArgumentException("incorrect id");
+        }
+        return itemRepo.deleteItem(id);
     }
 }

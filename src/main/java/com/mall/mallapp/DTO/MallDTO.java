@@ -1,28 +1,21 @@
-package com.mall.mallapp.model;
+package com.mall.mallapp.DTO;
 
-public class Mall {
+import com.google.gson.Gson;
+import com.mall.mallapp.model.Mall;
 
-    int id;
+public class MallDTO {
     String name ;
     String address;
     int number_of_floors;
     String description;
 
-    public Mall(){};
-    public Mall(int id, String name, String address, int number_of_floors, String description) {
-        this.id = id;
+    public MallDTO(){};
+
+    public MallDTO(String name, String address, int number_of_floors, String description) {
         this.name = name;
         this.address = address;
         this.number_of_floors = number_of_floors;
         this.description = description;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -57,22 +50,9 @@ public class Mall {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (!(obj instanceof Mall)) {
-            return false;
-        }
-
-        Mall other = (Mall) obj;
-
-        boolean b = name.equals(other.name) && address.equals(other.address) &&
-                number_of_floors== other.number_of_floors &&
-                description.equals(other.description);
-        System.out.println(b);
-        return b;
+    public String toJSON() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
+
 }

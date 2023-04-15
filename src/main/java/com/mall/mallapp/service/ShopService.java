@@ -1,101 +1,68 @@
 package com.mall.mallapp.service;
 
-import com.aerospike.client.AerospikeException;
-import com.aerospike.client.Bin;
-import com.aerospike.client.Key;
-import com.aerospike.client.Record;
-import com.aerospike.client.policy.RecordExistsAction;
-import com.aerospike.client.policy.WritePolicy;
-import com.aerospike.client.query.RecordSet;
-import com.aerospike.client.query.Statement;
-import com.mall.mallapp.DBConfig.AerospikeDB;
+import com.mall.mallapp.DTO.FloorDTO;
+import com.mall.mallapp.DTO.ShopDTO;
+import com.mall.mallapp.exception.NotFoundException;
+import com.mall.mallapp.mapper.ShopMapperImpl;
 import com.mall.mallapp.model.Floor;
-import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.model.Shop;
+import com.mall.mallapp.reposotry.ShopRepo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ShopService {
+    ShopRepo shopRepo = new ShopRepo();
 
-    String namespace = "test";
-    String set = "shop";
-    public List<Shop> getShops(int mall_id , int floor_id) {
+    ShopMapperImpl shopMapper = new ShopMapperImpl();
+    public List<ShopDTO> getShops(int mall_id , int floor_id) throws IllegalArgumentException , NotFoundException {
 
-        List<Shop> ShopList = new ArrayList<Shop>() ;
+        if(mall_id < 1 || floor_id < 1)
+            throw new IllegalArgumentException("mall or floor id is not correct");
+        List<Shop> shopList =  shopRepo.getShops(mall_id , floor_id);
+        List<ShopDTO> dtoList = new ArrayList<>();
 
-        Statement statement = new Statement();
+        for(Shop m : shopList)
+            dtoList.add(shopMapper.ToDto(m));
 
-        statement.setNamespace(namespace);
-        statement.setSetName(set);
-        RecordSet records = AerospikeDB.getClient().query(null , statement);
-        try{
-            while (records.next()) {
-                Key key = records.getKey();
-                Record record = records.getRecord();
-                Shop newShop = new Shop(key.userKey.toInteger(), record.getInt("floor_id"), record.getInt("mall_id"), record.getString("shop_name"), record.getString("desc"),record.getString("opening_hours"));
-                ShopList.add(newShop);
-            }
-            records.close();
-        }
-        catch (AerospikeException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        List<Shop> filteredList = ShopList.stream()
-                .filter(shop -> shop.getMall_id() == mall_id && shop.getFloor_id() == floor_id)
-                .collect(Collectors.toList());
-        return filteredList;
+        if(shopList.size()==0)
+            throw new NotFoundException("Error : no shops");
+        return dtoList;
     }
 
-    public Shop add_shop(int mallId , int floorId , Shop shop)
+    public ShopDTO getShop(int mall_id , int floor_id , int shop_id) throws IllegalArgumentException,NotFoundException
     {
-        shop.setShop_id(3);
-        WritePolicy writePolicy = new WritePolicy();
-        writePolicy.sendKey = true;
-        Key key = new Key(namespace , set, 3 );
-        shop.setFloor_id(floorId);
-        shop.setMall_id(mallId);
-        bins_update_create(shop,key, writePolicy);
-        return shop;
+        if(shop_id < 1 || mall_id < 1 ||floor_id <1  )
+            throw new IllegalArgumentException("mall , floor or shop id is not correct");
+
+        ShopDTO sDTO = shopMapper.ToDto(shopRepo.getShop(shop_id));
+        if(sDTO == null)
+            throw new NotFoundException("Error : the Shop not found");
+
+        return sDTO;
     }
 
-    public Shop getShop(int shop_id)
+
+    public ShopDTO add_shop(int mallId , int floorId , ShopDTO shop) throws IllegalArgumentException
     {
-        Key key = new Key(namespace,set, shop_id);
-        Record record = AerospikeDB.getClient().get(null, key);
-        if(record==null) {
-            return null;
-        }
-        return new Shop(key.userKey.toInteger(),record.getInt("floor_id"),record.getInt("mall_id"),record.getString("shop_name"), record.getString("desc"),record.getString("opening_hours"));
+        if(mallId < 1 || floorId <1 ||shop.getShop_name().isEmpty() || shop.getShop_name() == null)
+            throw new IllegalArgumentException("mall or floor id or data is not correct");
+        return shopMapper.ToDto(shopRepo.add_shop(mallId, floorId , shopMapper.ToEntity(shop)));
     }
 
-    public void updateShop(int id , Shop shop)
+
+    public void updateShop(int id , ShopDTO shop) throws IllegalArgumentException
     {
-        Key key = new Key(namespace, set, id);
-
-        WritePolicy updatePolicy = new WritePolicy();
-        updatePolicy.recordExistsAction = RecordExistsAction.UPDATE_ONLY;
-
-        bins_update_create(shop, key, updatePolicy);
+        if(id<1 || shop.getShop_name().isEmpty() || shop.getShop_name()==null)
+            throw new IllegalArgumentException("make sure that the data provided is correct");
+        shopRepo.updateShop(id , shopMapper.ToEntity(shop));
     }
 
     public String deleteShop(int id)
     {
-        Key key = new Key(namespace,set, id);
-        WritePolicy deletePolicy = new WritePolicy();
-        deletePolicy.durableDelete = true;
-        AerospikeDB.getClient().delete(null , key);
-        return "Deleted successfully";
-    }
-
-    private void bins_update_create(Shop shop, Key key, WritePolicy Policy) {
-        Bin floor_id = new Bin("floor_id" , shop.getFloor_id());
-        Bin mall_id = new Bin("mall_id" , shop.getMall_id());
-        Bin shop_name = new Bin ("shop_name" , shop.getShop_name());
-        Bin desc = new Bin("desc", shop.getDesc());
-        Bin opening_hours = new Bin("opening_hours", shop.getOpening_hours());
-
-        AerospikeDB.getClient().put(Policy,key,floor_id,mall_id,shop_name,desc,opening_hours);
+        if (id < 1 ) {
+            throw new IllegalArgumentException("incorrect id");
+        }
+        return shopRepo.deleteShop(id);
     }
 }
