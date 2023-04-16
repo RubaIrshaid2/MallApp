@@ -13,6 +13,7 @@ import com.aerospike.client.policy.WritePolicy;
 import com.aerospike.client.query.RecordSet;
 import com.aerospike.client.query.Statement;
 import com.mall.mallapp.DBConfig.AerospikeDB;
+import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.model.Mall;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class MallRepo {
      */
     int next_id ;
 
+    List<Mall> mallsInDataBase = new ArrayList<>();
     /**
      * Constructs a new MallRepo object.
      * Initializes the next_id field with the highest ID of the Mall objects already in the database.
@@ -48,6 +50,9 @@ public class MallRepo {
 
             while (records.next()) {
                 Key key = records.getKey();
+                Record record = records.getRecord();
+                Mall newMall = new Mall(key.userKey.toInteger(),record.getString("name"),record.getString("address"),record.getInt("NumOfFloors"), record.getString("desc"));
+                mallsInDataBase.add(newMall);
                 maxi = Math.max(key.userKey.toInteger(),maxi);
             }
             records.close();
@@ -107,15 +112,20 @@ public class MallRepo {
      * @param mall the Mall object to add
      * @return the added Mall object
      */
-    public Mall AddMAll(Mall mall)
+    public Mall AddMAll(Mall mall) throws ObjectExistsException
     {
-        mall.setId(next_id);
-        WritePolicy writePolicy = new WritePolicy();
-        writePolicy.sendKey = true;
-        Key key = new Key(namespace , set , next_id);
-        bins_update_create(mall, key, writePolicy);
-        next_id++;
-        return mall;
+        boolean found = mallsInDataBase.stream().anyMatch(m -> m.getName().equals(mall.getName()));
+        if(!found) {
+            mall.setId(next_id);
+            WritePolicy writePolicy = new WritePolicy();
+            writePolicy.sendKey = true;
+            Key key = new Key(namespace, set, next_id);
+            bins_update_create(mall, key, writePolicy);
+            next_id++;
+            mallsInDataBase.add(mall);
+            return mall;
+        }
+        throw new ObjectExistsException("the mall is already exist");
     }
 
     /**

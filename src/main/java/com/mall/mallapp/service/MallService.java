@@ -6,6 +6,7 @@ package com.mall.mallapp.service;
 
 import com.mall.mallapp.DTO.MallDTO;
 import com.mall.mallapp.exception.NotFoundException;
+import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.mapper.MallMapperImpl;
 import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.reposotry.MallRepo;
@@ -78,13 +79,22 @@ public class MallService {
      * @param mall the MallDTO object representing the mall to add
      * @return a MallDTO object representing the added mall
      * @throws IllegalArgumentException if the data of the mall is not correct
+     * @throws ObjectExistsException if the mall is already exist by checking the name
      */
-    public MallDTO add_Mall(MallDTO mall) throws IllegalArgumentException
+    public MallDTO add_Mall(MallDTO mall) throws IllegalArgumentException, ObjectExistsException
     {
         if (mall.getName().isEmpty() || mall.getAddress().isEmpty() || mall.getName() == null || mall.getAddress() == null) {
             throw new IllegalArgumentException("the data of the mall is not correct");
         }
-        return mallMapper.ToDto(mallRepo.AddMAll(mallMapper.toEntity(mall)));
+        try
+        {
+            return mallMapper.ToDto(mallRepo.AddMAll(mallMapper.toEntity(mall)));
+        }
+        catch (ObjectExistsException oe)
+        {
+            throw new ObjectExistsException("the mall is already exist");
+        }
+
     }
 
     /**
