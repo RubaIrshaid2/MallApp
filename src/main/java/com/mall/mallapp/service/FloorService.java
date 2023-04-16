@@ -5,6 +5,7 @@ package com.mall.mallapp.service;
 
 import com.mall.mallapp.DTO.FloorDTO;
 import com.mall.mallapp.exception.NotFoundException;
+import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.mapper.FloorMapperImpl;
 import com.mall.mallapp.model.Floor;
 import com.mall.mallapp.model.Mall;
@@ -79,14 +80,17 @@ public class FloorService {
      * @return the FloorDTO object that was added
      * @throws IllegalArgumentException if the mall_id or data is not correct
      */
-    public FloorDTO add_Floor(int Mall_id , FloorDTO floor) throws IllegalArgumentException
+    public FloorDTO add_Floor(int Mall_id , FloorDTO floor) throws IllegalArgumentException , ObjectExistsException
     {
         if(Mall_id <1 || floor.getFloor_number()<1 || floor.getCategory().isEmpty())
             throw new IllegalArgumentException("Error : mall id or data is not correct");
-
-        Floor flf = floorRepo.add_Floor(Mall_id , floorMapper.ToEntity(floor));
-        return floorMapper.ToDto(flf);
-        //return floorMapper.ToDto(floorRepo.add_Floor(Mall_id , floorMapper.ToEntity(floor)));
+        try {
+            return floorMapper.ToDto(floorRepo.add_Floor(Mall_id, floorMapper.ToEntity(floor)));
+        }
+        catch (ObjectExistsException oe)
+        {
+            throw new ObjectExistsException("the floor is already exist");
+        }
 
     }
 

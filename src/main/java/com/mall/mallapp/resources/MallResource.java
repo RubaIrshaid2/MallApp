@@ -9,6 +9,7 @@ package com.mall.mallapp.resources;
 
 import com.mall.mallapp.DTO.MallDTO;
 import com.mall.mallapp.exception.NotFoundException;
+import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.service.MallService;
 
@@ -82,7 +83,8 @@ public class MallResource {
      * @param mall The MallDTO representing the new mall to add.
      * @return A Response object containing a JSON representation of the
      *         MallDTO for the newly-added mall, or a NOT_FOUND status code
-     *         and an error message if the mall could not be added.
+     *         and an error message if the mall could not be added
+     *         if its already exist or there is missing data.
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -97,6 +99,13 @@ public class MallResource {
         {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(ie.getMessage())
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+        catch (ObjectExistsException oe)
+        {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(oe.getMessage())
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }

@@ -14,6 +14,7 @@ import com.aerospike.client.policy.WritePolicy;
 import com.aerospike.client.query.RecordSet;
 import com.aerospike.client.query.Statement;
 import com.mall.mallapp.DBConfig.AerospikeDB;
+import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.model.Floor;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class FloorRepo {
      */
     int next_id;
 
+    List<Floor> floorsInDatabase = new ArrayList<>();
+
     /**
      *Constructs a new FloorRepo object and initializes the next ID by querying the Aerospike database for the highest
      *existing ID.
@@ -49,6 +52,9 @@ public class FloorRepo {
         try{
             while (records.next()) {
                 Key key = records.getKey();
+                Record record = records.getRecord();
+                Floor newFloor = new Floor(key.userKey.toInteger(), record.getInt("mall_id"), record.getInt("floor_number"), record.getString("category"), record.getInt("NumOfShops"));
+                floorsInDatabase.add(newFloor);
                 maxi = Math.max(key.userKey.toInteger(),maxi);
                 }
             records.close();
@@ -132,16 +138,21 @@ public class FloorRepo {
      * @param floor the floor to add.
      * @return the added floor.
      */
-    public Floor add_Floor(int mall_id ,Floor floor)
+    public Floor add_Floor(int mall_id ,Floor floor) throws ObjectExistsException
     {
-        floor.setId(next_id);
-        floor.setMall_id(mall_id);
-        WritePolicy writePolicy = new WritePolicy();
-        writePolicy.sendKey = true;
-        Key key = new Key(namespace , set, next_id);
-        bins_update_create(floor, key, writePolicy);
-        next_id++;
-        return floor;
+        boolean found = floorsInDatabase.stream().anyMatch(f -> f.getFloor_number() == floor.getFloor_number() && f.getMall_id() == mall_id);
+
+        if(!found) {
+            floor.setId(next_id);
+            floor.setMall_id(mall_id);
+            WritePolicy writePolicy = new WritePolicy();
+            writePolicy.sendKey = true;
+            Key key = new Key(namespace, set, next_id);
+            bins_update_create(floor, key, writePolicy);
+            next_id++;
+            return floor;
+        }
+        throw new ObjectExistsException("the Floor is already exist");
     }
 
     /**

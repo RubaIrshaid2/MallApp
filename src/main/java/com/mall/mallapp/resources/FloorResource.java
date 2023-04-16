@@ -62,13 +62,14 @@ public class FloorResource {
             FloorDTO f = fs.add_Floor(mall_id, floor);
             return Response.ok(f.toJSON(), MediaType.APPLICATION_JSON).build();
         }
-        catch (IllegalArgumentException ie)
+        catch (Exception e)
         {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(ie.getMessage())
+                    .entity(e.getMessage())
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }
+
 
     }
 
