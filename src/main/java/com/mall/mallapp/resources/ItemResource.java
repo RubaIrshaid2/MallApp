@@ -1,3 +1,7 @@
+
+/**
+ * Resource class for handling requests related to items in a shop.
+ */
 package com.mall.mallapp.resources;
 
 import com.mall.mallapp.DTO.ItemDTO;
@@ -15,6 +19,12 @@ import java.util.List;
 public class ItemResource {
 
     ItemService is = new ItemService();
+    /**
+     * Retrieves a list of items for a given shop.
+     *
+     * @param shop_id the id of the shop to retrieve items for
+     * @return a response containing the list of items in JSON format
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getItems(@PathParam("shop_id") int shop_id) {
@@ -33,6 +43,13 @@ public class ItemResource {
 
     }
 
+    /**
+     * Adds a new item to a given shop.
+     *
+     * @param shop_id the id of the shop to add the item to
+     * @param item    the item to add
+     * @return a response containing the added item in JSON format
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -51,6 +68,12 @@ public class ItemResource {
         }
     }
 
+    /**
+     * Retrieves a single item for a given id.
+     *
+     * @param item_id the id of the item to retrieve
+     * @return a response containing the item in JSON format
+     */
     @GET
     @Path("/{item_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -70,6 +93,14 @@ public class ItemResource {
         }
     }
 
+    /**
+     * Updates an existing item for a given id and shop id.
+     *
+     * @param item_id the id of the item to update
+     * @param shop_id the id of the shop to update the item for
+     * @param item    the updated item
+     * @return a response indicating a successful update
+     */
     @PUT
     @Path("/{item_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -90,6 +121,11 @@ public class ItemResource {
         }
     }
 
+    /**
+     * This resource class handles HTTP DELETE requests for deleting an item from a shop in the mall application.
+     * @param id for the item to be deleted
+     * @return Response object with a success message in JSON format, if successful.
+     */
     @DELETE
     @Path("/{item_id}")
     @Produces("text/plain")

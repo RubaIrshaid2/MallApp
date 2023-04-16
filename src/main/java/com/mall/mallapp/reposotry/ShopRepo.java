@@ -1,3 +1,6 @@
+/**
+* A repository class for managing the data of shops in the mall application.
+ */
 package com.mall.mallapp.reposotry;
 
 import com.aerospike.client.AerospikeException;
@@ -17,11 +20,23 @@ import java.util.stream.Collectors;
 
 public class ShopRepo {
 
+    /**
+     * The namespace of the Aerospike database where the shops are stored.
+     */
     String namespace = "test";
+    /**
+     * The set of the Aerospike database where the shops are stored.
+     */
     String set = "shop";
 
+    /**
+     * The ID of the next shop that will be added to the database.
+     */
     int next_id ;
 
+    /**
+     * Initializes a new instance of the {@link ShopRepo} class.
+     */
     public ShopRepo()
     {
         int maxi = 0 ;
@@ -42,6 +57,13 @@ public class ShopRepo {
         }
         next_id = maxi+1;
     }
+    /**
+     * Returns a list of all the shops in the given mall and floor.
+     *
+     * @param mall_id  the ID of the mall
+     * @param floor_id the ID of the floor
+     * @return a list of {@link Shop} objects
+     */
 
     public List<Shop> getShops(int mall_id , int floor_id) {
 
@@ -70,6 +92,12 @@ public class ShopRepo {
         return filteredList;
     }
 
+    /**
+     * Returns the shop with the given ID.
+     *
+     * @param shop_id the ID of the shop
+     * @return the {@link Shop} object with the given ID, or {@code null} if no such object exists
+     */
     public Shop getShop(int shop_id)
     {
         Key key = new Key(namespace,set, shop_id);
@@ -80,6 +108,15 @@ public class ShopRepo {
         return new Shop(key.userKey.toInteger(),record.getInt("floor_id"),record.getInt("mall_id"),record.getString("shop_name"), record.getString("desc"),record.getString("opening_hours"));
     }
 
+    /**
+     *Adds a new shop to the database with the given mall ID, floor ID, and shop object.
+     * Sets the shop_id of the shop object to the next available ID and updates the floor_id and mall_id fields.
+     * @param mallId The ID of the mall in which the shop is located
+     * @param floorId The ID of the floor on which the shop is located
+     * @param shop The Shop object to be added to the database
+     * @return The Shop object that was added to the database
+     *
+     */
     public Shop add_shop(int mallId , int floorId , Shop shop)
     {
         shop.setShop_id(next_id);
@@ -92,6 +129,14 @@ public class ShopRepo {
         return shop;
     }
 
+    /**
+     * Updates an existing shop in the database with the given ID and new shop object.
+     *
+     * @param id The ID of the shop to be updated
+     *
+     * @param shop The new Shop object to replace the existing shop object in the database
+     */
+
     public void updateShop(int id , Shop shop)
     {
         Key key = new Key(namespace, set, id);
@@ -102,6 +147,12 @@ public class ShopRepo {
         bins_update_create(shop, key, updatePolicy);
     }
 
+    /**
+     *Deletes the shop with the given ID from the database.
+     * @param id The ID of the shop to be deleted
+     * @return A string indicating whether the deletion was successful or not
+     */
+
     public String deleteShop(int id)
     {
         Key key = new Key(namespace,set, id);
@@ -110,6 +161,18 @@ public class ShopRepo {
         AerospikeDB.getClient().delete(null , key);
         return "Deleted successfully";
     }
+
+    /**
+     *Updates or creates a record in the database with the given Shop object and key.
+     *
+     * The Shop object's fields are added as bins to the record.
+     *
+     * @param shop The Shop object to be added or updated in the database
+     *
+     * @param key The key of the record to be updated or created in the database
+     *
+     * @param Policy The WritePolicy to be used for updating or creating the record
+     */
 
     private void bins_update_create(Shop shop, Key key, WritePolicy Policy) {
         Bin floor_id = new Bin("floor_id" , shop.getFloor_id());

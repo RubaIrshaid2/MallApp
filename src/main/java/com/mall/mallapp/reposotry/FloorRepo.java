@@ -1,3 +1,8 @@
+/**
+ * This is a Java class for the Floor repository which interacts with the Aerospike database.
+ * The repository has methods for retrieving, adding, updating, and deleting Floor objects from the database.
+ *  The FloorRepo class represents a repository for storing and managing floor records in an Aerospike database.
+ */
 package com.mall.mallapp.reposotry;
 
 import com.aerospike.client.AerospikeException;
@@ -16,10 +21,23 @@ import java.util.List;
 
 public class FloorRepo {
 
+    /**
+     *The namespace of the Aerospike database.
+     */
     String namespace = "test";
+    /**
+     *The set name of the Aerospike database.
+     */
     String set = "floor";
+    /**
+     The next ID to use for a new record.
+     */
     int next_id;
 
+    /**
+     *Constructs a new FloorRepo object and initializes the next ID by querying the Aerospike database for the highest
+     *existing ID.
+     */
     public FloorRepo()
     {
         int maxi = 0 ;
@@ -40,6 +58,11 @@ public class FloorRepo {
         }
         next_id = maxi+1;
     }
+    /**
+     *Returns a list of all floors in the specified mall.
+     *@param mall_id the ID of the mall to retrieve floors from.
+     *@return a list of all floors in the specified mall.
+     */
     public List<Floor> getFloors(int mall_id)
     {
         List<Floor> FloorList = new ArrayList<Floor>() ;
@@ -66,6 +89,12 @@ public class FloorRepo {
         return FloorList;
     }
 
+    /**
+     *Returns the floor with the specified ID and mall ID.
+     *@param mall_id the ID of the mall the floor belongs to.
+     *@param floor_number the ID of the floor.
+     *@return the floor with the specified ID and mall ID, or null if no such floor exists.
+     */
     public Floor getFloor(int mall_id , int floor_number)
     {
 
@@ -97,6 +126,12 @@ public class FloorRepo {
         return floorInMall;
     }
 
+    /**
+     *Adds a new floor to the specified mall.
+     * @param mall_id the ID of the mall to add the floor to.
+     * @param floor the floor to add.
+     * @return the added floor.
+     */
     public Floor add_Floor(int mall_id ,Floor floor)
     {
         floor.setId(next_id);
@@ -109,6 +144,12 @@ public class FloorRepo {
         return floor;
     }
 
+    /**
+     * Updates the floor with the specified ID and mall ID in the specified mall.
+     * @param mall_id the ID of the mall the floor belongs to.
+     * @param id the ID of the floor.
+     * @param floor the updated floor object.
+     */
     public void updateFloor(int mall_id ,int id , Floor floor)
     {
         floor.setMall_id(mall_id);
@@ -120,6 +161,11 @@ public class FloorRepo {
         bins_update_create(floor, key, updatePolicy);
     }
 
+    /**
+     * Deletes the floor with the specified ID.
+     * @param id the ID of the floor to delete.
+     * @return a string indicating whether the deletion was successful.
+     */
     public String deleteFloor(int id)
     {
         Key key = new Key(namespace,set, id);
@@ -128,6 +174,14 @@ public class FloorRepo {
         AerospikeDB.getClient().delete(null , key);
         return "Deleted successfully";
     }
+
+    /**
+     *
+     * Updates or creates bins for the specified floor object and key using the specified write policy.
+     * @param floor the floor object to update or create bins for.
+     * @param key the key to use for the update or create operation.
+     * @param Policy the write policy to use for the update or create operation.
+     */
     private void bins_update_create(Floor floor, Key key, WritePolicy Policy) {
         Bin floor_number = new Bin("floor_number" , floor.getFloor_number());
         Bin category = new Bin("category" , floor.getCategory());

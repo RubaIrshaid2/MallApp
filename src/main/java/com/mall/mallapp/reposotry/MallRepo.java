@@ -1,3 +1,7 @@
+/**
+
+ The MallRepo class represents a repository for CRUD operations on Mall objects in the Aerospike database.
+ */
 package com.mall.mallapp.reposotry;
 
 import com.aerospike.client.AerospikeException;
@@ -16,10 +20,19 @@ import java.util.List;
 
 public class MallRepo {
 
+    // The namespace where the data is stored in the Aerospike database
     String namespace = "test";
+    // The set where the Mall objects are stored in the Aerospike database
     String set = "mall";
+    /**
+     * The ID of the next Mall object that will be added to the Aerospike database
+     */
     int next_id ;
 
+    /**
+     * Constructs a new MallRepo object.
+     * Initializes the next_id field with the highest ID of the Mall objects already in the database.
+     */
     public MallRepo()
     {
         Statement statement = new Statement();
@@ -27,11 +40,12 @@ public class MallRepo {
         statement.setNamespace(namespace);
         statement.setSetName(set);
 
-        RecordSet records = AerospikeDB.getClient().query(null , statement);
 
         int maxi = 0 ;
 
         try{
+            RecordSet records = AerospikeDB.getClient().query(null , statement);
+
             while (records.next()) {
                 Key key = records.getKey();
                 maxi = Math.max(key.userKey.toInteger(),maxi);
@@ -43,6 +57,10 @@ public class MallRepo {
         }
         next_id = maxi+1;
     }
+    /**
+     * Retrieves a list of all Mall objects in the Aerospike database.
+     * @return a list of all Mall objects in the Aerospike database
+     */
     public List<Mall> GetMalls()
     {
         List<Mall> mallList = new ArrayList<Mall>() ;
@@ -69,6 +87,11 @@ public class MallRepo {
     }
 
 
+    /**
+     * Retrieves the Mall object with the given ID from the Aerospike database.
+     * @param id the ID of the Mall object to retrieve
+     * @return the Mall object with the given ID, or null if no such object exists
+     */
     public Mall GetMall(int id)
     {
         Key key = new Key(namespace, set, id);
@@ -79,6 +102,11 @@ public class MallRepo {
         return new Mall(key.userKey.toInteger(),record.getString("name"),record.getString("address"),record.getInt("NumOfFloors"), record.getString("desc"));
     }
 
+    /**
+     * Adds a new Mall object to the Aerospike database.
+     * @param mall the Mall object to add
+     * @return the added Mall object
+     */
     public Mall AddMAll(Mall mall)
     {
         mall.setId(next_id);
@@ -90,6 +118,14 @@ public class MallRepo {
         return mall;
     }
 
+    /**
+
+     Updates the details of a mall with the given ID in the Aerospike database.
+
+     @param id The ID of the mall to be updated.
+
+     @param mall The updated mall object containing the new details.
+     */
     public void UpdateMall(int id , Mall mall)
     {
         Key key = new Key(namespace, set, id);
@@ -100,6 +136,13 @@ public class MallRepo {
         bins_update_create(mall, key, updatePolicy);
     }
 
+    /**
+     * Deletes the mall with the given ID from the Aerospike database.
+     *
+     * @param id The ID of the mall to be deleted.
+     *
+     * @return A string indicating whether the deletion was successful or not.
+     */
     public String DeleteMall(int id)
     {
         Key key = new Key(namespace,set, id);
@@ -108,6 +151,17 @@ public class MallRepo {
         AerospikeDB.getClient().delete(null , key);
         return "Deleted successfully";
     }
+
+    /**
+     *
+     *Helper method to create and update bins for a mall in the Aerospike database.
+     *
+     * @param mall The mall object containing the updated details.
+     *
+     * @param key The key of the mall in the database.
+     *
+     * @param Policy The write policy to be used for updating the mall details.
+     */
     private void bins_update_create(Mall mall, Key key, WritePolicy Policy) {
         Bin name = new Bin("name" , mall.getName());
         Bin address = new Bin("address" , mall.getAddress());

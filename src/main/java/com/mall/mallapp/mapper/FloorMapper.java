@@ -1,3 +1,10 @@
+
+/**
+ * Implementation of the {@link FloorMapper} interface.
+ * This class maps between {@link Floor} and {@link FloorDTO} classes using the methods defined in the
+ * {@link FloorMapper} interface.
+ */
+
 package com.mall.mallapp.mapper;
 
 import com.mall.mallapp.DTO.FloorDTO;
@@ -7,9 +14,19 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface FloorMapper {
 
-    //mapping from floor to floorDTO
+    /**
+     * Maps a Floor entity to a FloorDTO data transfer object.
+     *
+     * @param floor the Floor entity to map
+     * @return the corresponding FloorDTO data transfer object
+     */
     FloorDTO ToDto(Floor floor);
 
-    //mapping form FloorDTO to Floor entity
+    /**
+     * Maps a FloorDTO data transfer object to a Floor entity.
+     *
+     * @param floorDto the FloorDTO data transfer object to map
+     * @return the corresponding Floor entity
+     */
     Floor ToEntity(FloorDTO floorDto);
 }

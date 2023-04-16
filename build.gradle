@@ -45,6 +45,8 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
 
     implementation 'com.google.code.gson:gson:2.8.9'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:3.11.2'
 
 }
 
