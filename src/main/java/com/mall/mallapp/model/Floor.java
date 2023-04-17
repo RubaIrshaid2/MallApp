@@ -1,22 +1,19 @@
-/**
-
- The {@code Floor} class represents a floor in a shopping mall.
- It contains information about the floor such as its ID, mall ID,
- floor number, category and number of shops.
- <p>
- This class provides getters and setters for accessing and modifying
- its fields.
- */
 package com.mall.mallapp.model;
-
+/**
+ *  The {@code Floor} class represents a floor in a shopping mall.
+ *  It contains information about the floor such as its ID, mall ID,
+ *  floor number, category and number of shops.
+ *  <p>
+ *  This class provides getters and setters for accessing and modifying
+ *  its fields.
+ */
 public class Floor {
 
-    int id;
-    int mall_id;
-    int floor_number;
-
-    String category;
-    int number_of_shops;
+    private int id;
+    private int mallId;
+    private int floorNumber;
+    private String category;
+    private int numberOfShops;
 
     /**
      * Constructs a new {@code Floor} object with default values.
@@ -34,15 +31,14 @@ public class Floor {
      */
     public Floor(int id,int mall_id , int floor_number, String category, int number_of_shops) {
         this.id = id;
-        this.mall_id = mall_id;
-        this.floor_number = floor_number;
+        this.mallId = mall_id;
+        this.floorNumber = floor_number;
         this.category = category;
-        this.number_of_shops = number_of_shops;
+        this.numberOfShops = number_of_shops;
     }
 
     /**
      * Returns the ID of the floor.
-     *
      * @return the ID of the floor
      */
     public int getId() {
@@ -63,17 +59,17 @@ public class Floor {
      *
      * @return the ID of the mall that the floor belongs to
      */
-    public int getMall_id() {
-        return mall_id;
+    public int getMallId() {
+        return mallId;
     }
 
     /**
      * Sets the ID of the mall that the floor belongs to.
      *
-     * @param mall_id the new ID of the mall that the floor belongs to
+     * @param mallId the new ID of the mall that the floor belongs to
      */
-    public void setMall_id(int mall_id) {
-        this.mall_id = mall_id;
+    public void setMallId(int mallId) {
+        this.mallId = mallId;
     }
 
     /**
@@ -81,17 +77,17 @@ public class Floor {
      *
      * @return the number of the floor
      */
-    public int getFloor_number() {
-        return floor_number;
+    public int getFloorNumber() {
+        return floorNumber;
     }
 
     /**
      * Sets the number of the floor.
      *
-     * @param floor_number the new number of the floor
+     * @param floorNumber the new number of the floor
      */
-    public void setFloor_number(int floor_number) {
-        this.floor_number = floor_number;
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
     }
 
     /**
@@ -117,16 +113,16 @@ public class Floor {
      *
      * @return the number of shops on the floor
      */
-    public int getNumber_of_shops() {
-        return number_of_shops;
+    public int getNumberOfShops() {
+        return numberOfShops;
     }
 
     /**
      * Sets the number of shops on the floor.
      *
-     * @param number_of_shops the new number of shops on the floor
+     * @param numberOfShops the new number of shops on the floor
      */
-    public void setNumber_of_shops(int number_of_shops) {
-        this.number_of_shops = number_of_shops;
+    public void setNumberOfShops(int numberOfShops) {
+        this.numberOfShops = numberOfShops;
     }
 }

@@ -1,20 +1,16 @@
-/**
-
- The FloorDTO class represents a Data Transfer Object (DTO) for a floor in a mall.
- It contains the floor number, the mall ID, category, and number of shops.
- */
-
 package com.mall.mallapp.DTO;
-
 import com.google.gson.Gson;
 
+/**
+ *  The FloorDTO class represents a Data Transfer Object (DTO) for a floor in a mall.
+ *  It contains the floor number, the mall ID, category, and number of shops.
+ */
 public class FloorDTO {
+    private int mallId;
+    private int floorNumber;
 
-    int mall_id;
-    int floor_number;
-
-    String category;
-    int number_of_shops;
+    private String category;
+    private int numberOfShops;
 
     /**
      * Default constructor for creating an empty instance of the class.
@@ -30,10 +26,10 @@ public class FloorDTO {
      * @param number_of_shops the number of shops on the floor
      */
     public FloorDTO(int mall_id, int floor_number, String category, int number_of_shops) {
-        this.mall_id = mall_id;
-        this.floor_number = floor_number;
+        this.mallId = mall_id;
+        this.floorNumber = floor_number;
         this.category = category;
-        this.number_of_shops = number_of_shops;
+        this.numberOfShops = number_of_shops;
     }
 
     /**
@@ -41,17 +37,17 @@ public class FloorDTO {
      *
      * @return mall_id the ID of the mall where the floor is located
      */
-    public int getMall_id() {
-        return mall_id;
+    public int getMallId() {
+        return mallId;
     }
 
     /**
      * Sets the mall ID.
      *
-     * @param mall_id the ID of the mall where the floor is located
+     * @param mallId the ID of the mall where the floor is located
      */
-    public void setMall_id(int mall_id) {
-        this.mall_id = mall_id;
+    public void setMallId(int mallId) {
+        this.mallId = mallId;
     }
 
     /**
@@ -59,17 +55,17 @@ public class FloorDTO {
      *
      * @return floor_number the floor number
      */
-    public int getFloor_number() {
-        return floor_number;
+    public int getFloorNumber() {
+        return floorNumber;
     }
 
     /**
      * Sets the floor number.
      *
-     * @param floor_number the floor number
+     * @param floorNumber the floor number
      */
-    public void setFloor_number(int floor_number) {
-        this.floor_number = floor_number;
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
     }
 
     /**
@@ -95,17 +91,17 @@ public class FloorDTO {
      *
      * @return number_of_shops the number of shops on the floor
      */
-    public int getNumber_of_shops() {
-        return number_of_shops;
+    public int getNumberOfShops() {
+        return numberOfShops;
     }
 
     /**
      * Sets the number of shops on the floor.
      *
-     * @param number_of_shops the number of shops on the floor
+     * @param numberOfShops the number of shops on the floor
      */
-    public void setNumber_of_shops(int number_of_shops) {
-        this.number_of_shops = number_of_shops;
+    public void setNumberOfShops(int numberOfShops) {
+        this.numberOfShops = numberOfShops;
     }
 
     /**
@@ -124,6 +120,7 @@ public class FloorDTO {
      * @param obj the object to compare
      * @return true if the objects are equal, false otherwise
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
@@ -135,9 +132,9 @@ public class FloorDTO {
 
         FloorDTO other = (FloorDTO) obj;
 
-        boolean b = mall_id== other.mall_id
-                && floor_number== other.floor_number
-                && number_of_shops== other.number_of_shops
+        boolean b = mallId == other.mallId
+                && floorNumber == other.floorNumber
+                && numberOfShops == other.numberOfShops
                 && category.equals(other.category) ;
         System.out.println(b);
         return b;

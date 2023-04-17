@@ -3,15 +3,17 @@
  *It contains a static method for getting a shared instance of the AerospikeClient object.
  */
 
-package com.mall.mallapp.DBConfig;
-
+package com.mall.mallapp.dBConfig;
 import com.aerospike.client.AerospikeClient;
-import com.aerospike.client.Key;
-
-
+/**
+ *The AerospikeDB class provides a wrapper for connecting to Aerospike database.
+ *It contains a static method for getting a shared instance of the AerospikeClient object.
+ */
 public class AerospikeDB {
 
-    private static AerospikeClient client = new AerospikeClient("127.0.0.1", 3000);
+    private static String hostName = "127.0.0.1";
+    private static int port = 3000;
+    private static AerospikeClient client = new AerospikeClient(hostName, port);
 
     /**
      * Private constructor to prevent the instantiation of the class.

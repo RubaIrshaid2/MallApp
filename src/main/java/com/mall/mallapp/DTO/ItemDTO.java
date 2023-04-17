@@ -1,16 +1,16 @@
+
+package com.mall.mallapp.DTO;
+import com.google.gson.Gson;
 /**
  * The `ItemDTO` class represents a data transfer object for an item in a shop. It contains
  * information about the item's name, price, description, and sale percentage.
  */
-package com.mall.mallapp.DTO;
-
-import com.google.gson.Gson;
 
 public class ItemDTO {
-    String name;
-    int price;
-    String desc;
-    int sale_pers;
+    private String name;
+    private int price;
+    private String desc;
+    private int salePers;
 
     /**
      * Constructs a new `ItemDTO` with default values for its fields.
@@ -29,7 +29,7 @@ public class ItemDTO {
         this.name = name;
         this.price = price;
         this.desc = desc;
-        this.sale_pers = sale_pers;
+        this.salePers = sale_pers;
     }
 
     /**
@@ -91,17 +91,17 @@ public class ItemDTO {
      *
      * @return the sale percentage of the item
      */
-    public int getSale_pers() {
-        return sale_pers;
+    public int getSalePers() {
+        return salePers;
     }
 
     /**
      * Sets the sale percentage of the item.
      *
-     * @param sale_pers the sale percentage of the item
+     * @param salePers the sale percentage of the item
      */
-    public void setSale_pers(int sale_pers) {
-        this.sale_pers = sale_pers;
+    public void setSalePers(int salePers) {
+        this.salePers = salePers;
     }
 
     /**

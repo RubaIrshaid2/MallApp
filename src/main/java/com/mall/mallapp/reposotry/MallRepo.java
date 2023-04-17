@@ -1,9 +1,4 @@
-/**
-
- The MallRepo class represents a repository for CRUD operations on Mall objects in the Aerospike database.
- */
 package com.mall.mallapp.reposotry;
-
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
@@ -12,13 +7,14 @@ import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 import com.aerospike.client.query.RecordSet;
 import com.aerospike.client.query.Statement;
-import com.mall.mallapp.DBConfig.AerospikeDB;
+import com.mall.mallapp.dBConfig.AerospikeDB;
 import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.model.Mall;
-
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The MallRepo class represents a repository for CRUD operations on Mall objects in the Aerospike database.
+ */
 public class MallRepo {
 
     // The namespace where the data is stored in the Aerospike database
@@ -28,7 +24,7 @@ public class MallRepo {
     /**
      * The ID of the next Mall object that will be added to the Aerospike database
      */
-    int next_id ;
+    int nextId;
 
     List<Mall> mallsInDataBase = new ArrayList<>();
     /**
@@ -42,12 +38,9 @@ public class MallRepo {
         statement.setNamespace(namespace);
         statement.setSetName(set);
 
-
         int maxi = 0 ;
-
         try{
             RecordSet records = AerospikeDB.getClient().query(null , statement);
-
             while (records.next()) {
                 Key key = records.getKey();
                 Record record = records.getRecord();
@@ -60,7 +53,7 @@ public class MallRepo {
         catch (AerospikeException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        next_id = maxi+1;
+        nextId = maxi+1;
     }
     /**
      * Retrieves a list of all Mall objects in the Aerospike database.
@@ -70,12 +63,9 @@ public class MallRepo {
     {
         List<Mall> mallList = new ArrayList<Mall>() ;
         Statement statement = new Statement();
-
         statement.setNamespace(namespace);
         statement.setSetName(set);
-
         RecordSet records = AerospikeDB.getClient().query(null , statement);
-
         try{
             while (records.next()) {
                 Key key = records.getKey();
@@ -116,12 +106,12 @@ public class MallRepo {
     {
         boolean found = mallsInDataBase.stream().anyMatch(m -> m.getName().equals(mall.getName()));
         if(!found) {
-            mall.setId(next_id);
+            mall.setId(nextId);
             WritePolicy writePolicy = new WritePolicy();
             writePolicy.sendKey = true;
-            Key key = new Key(namespace, set, next_id);
-            bins_update_create(mall, key, writePolicy);
-            next_id++;
+            Key key = new Key(namespace, set, nextId);
+            binsUpdateCreate(mall, key, writePolicy);
+            nextId++;
             mallsInDataBase.add(mall);
             return mall;
         }
@@ -139,11 +129,9 @@ public class MallRepo {
     public void UpdateMall(int id , Mall mall)
     {
         Key key = new Key(namespace, set, id);
-
         WritePolicy updatePolicy = new WritePolicy();
         updatePolicy.recordExistsAction = RecordExistsAction.UPDATE_ONLY;
-
-        bins_update_create(mall, key, updatePolicy);
+        binsUpdateCreate(mall, key, updatePolicy);
     }
 
     /**
@@ -172,12 +160,11 @@ public class MallRepo {
      *
      * @param Policy The write policy to be used for updating the mall details.
      */
-    private void bins_update_create(Mall mall, Key key, WritePolicy Policy) {
+    private void binsUpdateCreate(Mall mall, Key key, WritePolicy Policy) {
         Bin name = new Bin("name" , mall.getName());
         Bin address = new Bin("address" , mall.getAddress());
-        Bin numOfFloors = new Bin ("NumOfFloors" , mall.getNumber_of_floors());
+        Bin numOfFloors = new Bin ("NumOfFloors" , mall.getNumberOfFloors());
         Bin desc = new Bin("desc", mall.getDescription());
-
         AerospikeDB.getClient().put(Policy,key,name,address,numOfFloors,desc);
     }
 }

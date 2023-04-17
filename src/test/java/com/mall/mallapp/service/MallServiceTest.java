@@ -8,7 +8,6 @@ import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +144,7 @@ class MallServiceTest {
         when(dataBaseService.AddMAll(newMall)).thenReturn(newMall);
 
         MallDTO expected = new MallDTO( "new Mall" , "address" , 123 , "desc");
-        MallDTO actual = ms.add_Mall(expected);
+        MallDTO actual = ms.addMall(expected);
 
         assertEquals(expected,actual);
     }
@@ -154,7 +153,7 @@ class MallServiceTest {
     void when_addingMallWithEmptyFields_expect_IllegalArgumentException()
     {
         MallDTO mallDTO = new MallDTO( "" , "address" , 123 , "desc");
-        assertThrows(IllegalArgumentException.class , ()->ms.add_Mall(mallDTO));
+        assertThrows(IllegalArgumentException.class , ()->ms.addMall(mallDTO));
 
     }
 

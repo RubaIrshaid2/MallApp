@@ -1,24 +1,21 @@
-/**
- * This class represents the ShopService, which provides functionality for managing shops in a mall app.
- * It uses ShopRepo and ShopMapperImpl to interact with the data layer.
- */
 package com.mall.mallapp.service;
-
 import com.mall.mallapp.DTO.ShopDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.mapper.ShopMapperImpl;
 import com.mall.mallapp.model.Shop;
 import com.mall.mallapp.reposotry.ShopRepo;
-
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This class represents the ShopService, which provides functionality for managing shops in a mall app.
+ * It uses ShopRepo and ShopMapperImpl to interact with the data layer.
+ */
 public class ShopService {
     // instance of ShopRepo for accessing data layer
-    ShopRepo shopRepo = new ShopRepo();
+    private ShopRepo shopRepo = new ShopRepo();
 
     // instance of ShopMapperImpl for mapping between DTOs and entities
-    ShopMapperImpl shopMapper = new ShopMapperImpl();
+    private ShopMapperImpl shopMapper = new ShopMapperImpl();
 
     /**
      * Default constructor for ShopService.
@@ -86,11 +83,11 @@ public class ShopService {
      * @return ShopDTO representing the added shop
      * @throws IllegalArgumentException if mall or floor ID is less than 1 or shop data is missing or incorrect
      */
-    public ShopDTO add_shop(int mallId , int floorId , ShopDTO shop) throws IllegalArgumentException
+    public ShopDTO addShop(int mallId , int floorId , ShopDTO shop) throws IllegalArgumentException
     {
-        if(mallId < 1 || floorId <1 ||shop.getShop_name().isEmpty() || shop.getShop_name() == null)
+        if(mallId < 1 || floorId <1 ||shop.getShopName().isEmpty() || shop.getShopName() == null)
             throw new IllegalArgumentException("mall or floor id or data is not correct");
-        return shopMapper.ToDto(shopRepo.add_shop(mallId, floorId , shopMapper.ToEntity(shop)));
+        return shopMapper.ToDto(shopRepo.addShop(mallId, floorId , shopMapper.ToEntity(shop)));
     }
 
 
@@ -102,7 +99,7 @@ public class ShopService {
      */
     public void updateShop(int id , ShopDTO shop) throws IllegalArgumentException
     {
-        if(id<1 || shop.getShop_name().isEmpty() || shop.getShop_name()==null)
+        if(id<1 || shop.getShopName().isEmpty() || shop.getShopName()==null)
             throw new IllegalArgumentException("make sure that the data provided is correct");
         shopRepo.updateShop(id , shopMapper.ToEntity(shop));
     }

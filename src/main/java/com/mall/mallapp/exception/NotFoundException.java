@@ -1,9 +1,8 @@
+package com.mall.mallapp.exception;
 /**
  * Exception thrown when a resource is not found.
  */
-package com.mall.mallapp.exception;
-
-public class NotFoundException extends RuntimeException{
+public class NotFoundException extends Exception{
 
     /**
      * Constructs a new NotFoundException with the specified detail message.

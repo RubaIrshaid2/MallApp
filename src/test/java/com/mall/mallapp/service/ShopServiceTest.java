@@ -141,10 +141,10 @@ class ShopServiceTest {
     void When_addingShop_expect_retrieveTheSameShop()
     {
         Shop s = new Shop(2,1,1,"addidas","desc","9-10" );
-        when(dataBaseService.add_shop(1,1,s)).thenReturn(s);
+        when(dataBaseService.addShop(1,1,s)).thenReturn(s);
 
         ShopDTO expected = new ShopDTO(1,1,"addidas","desc","9-10" );
-        ShopDTO actual = ss.add_shop(1,1,expected);
+        ShopDTO actual = ss.addShop(1,1,expected);
 
         assertEquals(expected,actual);
     }
@@ -153,7 +153,7 @@ class ShopServiceTest {
     void when_addingShopWithEmptyFields_expect_IllegalArgumentException()
     {
         ShopDTO sDTO = new ShopDTO(1,1,"","desc","9-10" );
-        assertThrows(IllegalArgumentException.class , ()->ss.add_shop(1,1,sDTO));
+        assertThrows(IllegalArgumentException.class , ()->ss.addShop(1,1,sDTO));
     }
 
     @Test

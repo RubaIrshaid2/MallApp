@@ -1,8 +1,4 @@
-/**
-* A repository class for managing the data of shops in the mall application.
- */
 package com.mall.mallapp.reposotry;
-
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
@@ -11,28 +7,29 @@ import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 import com.aerospike.client.query.RecordSet;
 import com.aerospike.client.query.Statement;
-import com.mall.mallapp.DBConfig.AerospikeDB;
+import com.mall.mallapp.dBConfig.AerospikeDB;
 import com.mall.mallapp.model.Shop;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * A repository class for managing the data of shops in the mall application.
+ */
 public class ShopRepo {
 
     /**
      * The namespace of the Aerospike database where the shops are stored.
      */
-    String namespace = "test";
+    private String namespace = "test";
     /**
      * The set of the Aerospike database where the shops are stored.
      */
-    String set = "shop";
+    private String set = "shop";
 
     /**
      * The ID of the next shop that will be added to the database.
      */
-    int next_id ;
+    private int nextId;
 
     /**
      * Initializes a new instance of the {@link ShopRepo} class.
@@ -55,8 +52,9 @@ public class ShopRepo {
         catch (AerospikeException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        next_id = maxi+1;
+        nextId = maxi+1;
     }
+
     /**
      * Returns a list of all the shops in the given mall and floor.
      *
@@ -64,7 +62,6 @@ public class ShopRepo {
      * @param floor_id the ID of the floor
      * @return a list of {@link Shop} objects
      */
-
     public List<Shop> getShops(int mall_id , int floor_id) {
 
         List<Shop> ShopList = new ArrayList<Shop>() ;
@@ -117,15 +114,15 @@ public class ShopRepo {
      * @return The Shop object that was added to the database
      *
      */
-    public Shop add_shop(int mallId , int floorId , Shop shop)
+    public Shop addShop(int mallId , int floorId , Shop shop)
     {
-        shop.setShop_id(next_id);
+        shop.setShop_id(nextId);
         shop.setFloor_id(floorId);
         shop.setMall_id(mallId);
         WritePolicy writePolicy = new WritePolicy();
         writePolicy.sendKey = true;
-        Key key = new Key(namespace , set, next_id );
-        bins_update_create(shop,key, writePolicy);
+        Key key = new Key(namespace , set, nextId);
+        binsUpdateCreate(shop,key, writePolicy);
         return shop;
     }
 
@@ -144,7 +141,7 @@ public class ShopRepo {
         WritePolicy updatePolicy = new WritePolicy();
         updatePolicy.recordExistsAction = RecordExistsAction.UPDATE_ONLY;
 
-        bins_update_create(shop, key, updatePolicy);
+        binsUpdateCreate(shop, key, updatePolicy);
     }
 
     /**
@@ -174,7 +171,7 @@ public class ShopRepo {
      * @param Policy The WritePolicy to be used for updating or creating the record
      */
 
-    private void bins_update_create(Shop shop, Key key, WritePolicy Policy) {
+    private void binsUpdateCreate(Shop shop, Key key, WritePolicy Policy) {
         Bin floor_id = new Bin("floor_id" , shop.getFloor_id());
         Bin mall_id = new Bin("mall_id" , shop.getMall_id());
         Bin shop_name = new Bin ("shop_name" , shop.getShop_name());

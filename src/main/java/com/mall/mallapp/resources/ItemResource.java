@@ -1,24 +1,17 @@
-
-/**
- * Resource class for handling requests related to items in a shop.
- */
 package com.mall.mallapp.resources;
-
 import com.mall.mallapp.DTO.ItemDTO;
-import com.mall.mallapp.DTO.ShopDTO;
 import com.mall.mallapp.exception.NotFoundException;
-import com.mall.mallapp.model.Item;
-import com.mall.mallapp.model.Shop;
 import com.mall.mallapp.service.ItemService;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-
+/**
+ * Resource class for handling requests related to items in a shop.
+ */
 public class ItemResource {
 
-    ItemService is = new ItemService();
+    private ItemService is = new ItemService();
     /**
      * Retrieves a list of items for a given shop.
      *
@@ -56,7 +49,7 @@ public class ItemResource {
     public Response addItem(@PathParam("shop_id") int shop_id ,ItemDTO item)
     {
         try {
-            ItemDTO i = is.add_item(shop_id, item);
+            ItemDTO i = is.addItem(shop_id, item);
             return Response.ok(i.toJSON(), MediaType.APPLICATION_JSON).build();
         }
         catch (IllegalArgumentException ie)

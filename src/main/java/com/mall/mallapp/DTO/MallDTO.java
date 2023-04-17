@@ -1,18 +1,15 @@
-/**
-
- The MallDTO class represents a Data Transfer Object for a Mall entity.
- It contains information about the mall, such as its name, address, number of floors, and description.
- */
 package com.mall.mallapp.DTO;
-
 import com.google.gson.Gson;
-import com.mall.mallapp.model.Mall;
 
+/**
+ *  The MallDTO class represents a Data Transfer Object for a Mall entity.
+ *  It contains information about the mall, such as its name, address, number of floors, and description.
+ */
 public class MallDTO {
-    String name ;
-    String address;
-    int number_of_floors;
-    String description;
+    private String name ;
+    private String address;
+    private int numberOfFloors;
+    private String description;
 
     /**
      * Default constructor for MallDTO.
@@ -30,7 +27,7 @@ public class MallDTO {
     public MallDTO(String name, String address, int number_of_floors, String description) {
         this.name = name;
         this.address = address;
-        this.number_of_floors = number_of_floors;
+        this.numberOfFloors = number_of_floors;
         this.description = description;
     }
 
@@ -70,16 +67,16 @@ public class MallDTO {
      * Getter method for the number of floors in the mall.
      * @return The number of floors in the mall.
      */
-    public int getNumber_of_floors() {
-        return number_of_floors;
+    public int getNumberOfFloors() {
+        return numberOfFloors;
     }
 
     /**
      * Setter method for the number of floors in the mall.
-     * @param number_of_floors The new number of floors for the mall.
+     * @param numberOfFloors The new number of floors for the mall.
      */
-    public void setNumber_of_floors(int number_of_floors) {
-        this.number_of_floors = number_of_floors;
+    public void setNumberOfFloors(int numberOfFloors) {
+        this.numberOfFloors = numberOfFloors;
     }
 
     /**
@@ -112,6 +109,7 @@ public class MallDTO {
      * @param obj The object to compare against.
      * @return True if the objects are equal, false otherwise.
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
@@ -124,10 +122,9 @@ public class MallDTO {
         MallDTO other = (MallDTO) obj;
 
         boolean b = name.equals(other.name) && address.equals(other.address) &&
-                number_of_floors== other.number_of_floors &&
+                numberOfFloors == other.numberOfFloors &&
                 description.equals(other.description);
         System.out.println(b);
         return b;
     }
-
 }

@@ -1,8 +1,4 @@
-/**
- * The ItemRepo class provides methods for performing database operations on the Item model in an Aerospike database.
- */
 package com.mall.mallapp.reposotry;
-
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
@@ -11,27 +7,27 @@ import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 import com.aerospike.client.query.RecordSet;
 import com.aerospike.client.query.Statement;
-import com.mall.mallapp.DBConfig.AerospikeDB;
+import com.mall.mallapp.dBConfig.AerospikeDB;
 import com.mall.mallapp.model.Item;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * The ItemRepo class provides methods for performing database operations on the Item model in an Aerospike database.
+ */
 public class ItemRepo {
     /**
      * The namespace in the Aerospike database where the items are stored.
      */
-    String namespace = "test";
+    private String namespace = "test";
     /**
      * The name of the set in the Aerospike database where the items are stored.
      */
-    String set = "item";
+    private String set = "item";
     /**
      * The ID of the next item that will be added to the database.
      */
-    int next_id ;
-
+    private int nextId;
     /**
      * Constructs an ItemRepo object and sets the next_id field to the ID of the next item to be added to the database.
      * It does this by querying the database for all items and finding the maximum ID.
@@ -54,7 +50,7 @@ public class ItemRepo {
         catch (AerospikeException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        next_id = maxi+1;
+        nextId = maxi+1;
     }
 
     /**
@@ -85,7 +81,7 @@ public class ItemRepo {
             System.out.println("Error: " + e.getMessage());
         }
         List<Item> filteredList = ItemList.stream()
-                .filter(item -> item.getShop_id() == shop_id)
+                .filter(item -> item.getShopId() == shop_id)
                 .collect(Collectors.toList());
         return filteredList;
     }
@@ -107,22 +103,21 @@ public class ItemRepo {
     }
 
     /**
-
      *Adds a new item to the database with the given shop ID and returns the added item.
      *@param shop_id the ID of the shop where the item is being added
      *@param item the item being added to the database
      *@return the added item
      */
-    public Item add_item(int shop_id ,Item item)
+    public Item addItem(int shop_id , Item item)
     {
         System.out.println(shop_id);
-        item.setId(next_id);
-        item.setShop_id(shop_id);
+        item.setId(nextId);
+        item.setShopId(shop_id);
         WritePolicy writePolicy = new WritePolicy();
         writePolicy.sendKey = true;
-        Key key = new Key(namespace , set, next_id );
-        bins_update_create(item, key, writePolicy );
-        next_id++;
+        Key key = new Key(namespace , set, nextId);
+        binsUpdateCreate(item, key, writePolicy );
+        nextId++;
         return item;
     }
 
@@ -139,11 +134,11 @@ public class ItemRepo {
     public void updateItem(int id ,int shop_id ,  Item item)
     {
         Key key = new Key(namespace, set, id);
-        item.setShop_id(shop_id);
+        item.setShopId(shop_id);
         WritePolicy updatePolicy = new WritePolicy();
         updatePolicy.recordExistsAction = RecordExistsAction.UPDATE_ONLY;
 
-        bins_update_create(item, key, updatePolicy);
+        binsUpdateCreate(item, key, updatePolicy);
     }
 
     /**
@@ -167,12 +162,12 @@ public class ItemRepo {
      * @param key the key for the item being updated or added to the database
      * @param Policy the write policy being used to update or add the item to the database
      */
-    private void bins_update_create(Item item, Key key, WritePolicy Policy) {
-        Bin shopId = new Bin("shop_id" , item.getShop_id());
+    private void binsUpdateCreate(Item item, Key key, WritePolicy Policy) {
+        Bin shopId = new Bin("shop_id" , item.getShopId());
         Bin name = new Bin("name" , item.getName());
         Bin price = new Bin ("price" , item.getPrice());
         Bin desc = new Bin("desc", item.getDesc());
-        Bin sale_pers = new Bin("sale_pers" , item.getSale_pers());
+        Bin sale_pers = new Bin("sale_pers" , item.getSalePers());
         AerospikeDB.getClient().put(Policy,key,shopId,name,price,desc,sale_pers);
     }
 }

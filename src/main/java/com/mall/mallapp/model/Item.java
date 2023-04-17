@@ -1,18 +1,16 @@
-/**
-
- The Item class represents an item for sale in a shop.
- It contains information such as the item ID, the ID of the shop selling the item,
- the item name, price, description and sale percentage.
- */
 package com.mall.mallapp.model;
-
+/**
+ *  The Item class represents an item for sale in a shop.
+ *  It contains information such as the item ID, the ID of the shop selling the item,
+ *  the item name, price, description and sale percentage.
+ */
 public class Item {
-    int id;
-    int shop_id;
-    String name;
-    int price;
-    String desc;
-    int sale_pers;
+    private int id;
+    private int shopId;
+    private String name;
+    private int price;
+    private String desc;
+    private int salePers;
 
     public Item(){}
     /**
@@ -26,11 +24,11 @@ public class Item {
      */
     public Item(int id, int shop_id, String name, int price, String desc, int sale_pers) {
         this.id = id;
-        this.shop_id = shop_id;
+        this.shopId = shop_id;
         this.name = name;
         this.price = price;
         this.desc = desc;
-        this.sale_pers = sale_pers;
+        this.salePers = sale_pers;
     }
 
     /**
@@ -56,17 +54,17 @@ public class Item {
      *
      * @return the ID of the shop where the item is sold
      */
-    public int getShop_id() {
-        return shop_id;
+    public int getShopId() {
+        return shopId;
     }
 
     /**
      * Sets the ID of the shop where the item is sold.
      *
-     * @param shop_id the ID of the shop where the item is sold
+     * @param shopId the ID of the shop where the item is sold
      */
-    public void setShop_id(int shop_id) {
-        this.shop_id = shop_id;
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
     }
 
     /**
@@ -127,16 +125,16 @@ public class Item {
      *Returns the percentage of sale for this item.
      *@return an integer representing the percentage of sale for this item.
      */
-    public int getSale_pers() {
-        return sale_pers;
+    public int getSalePers() {
+        return salePers;
     }
 
     /**
 
      *Sets the percentage of sale for this item.
-     *@param sale_pers an integer representing the percentage of sale for this item.
+     *@param salePers an integer representing the percentage of sale for this item.
      */
-    public void setSale_pers(int sale_pers) {
-        this.sale_pers = sale_pers;
+    public void setSalePers(int salePers) {
+        this.salePers = salePers;
     }
 }

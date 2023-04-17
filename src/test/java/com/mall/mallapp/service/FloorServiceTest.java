@@ -1,15 +1,11 @@
 package com.mall.mallapp.service;
 
 import com.mall.mallapp.DTO.FloorDTO;
-import com.mall.mallapp.DTO.MallDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.model.Floor;
-import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.reposotry.FloorRepo;
-import com.mall.mallapp.reposotry.MallRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -41,8 +37,7 @@ class FloorServiceTest {
 
 
     @Test
-    void When_floorsAreExist_Expect_returningThefloors()
-    {
+    void When_floorsAreExist_Expect_returningThefloors() throws NotFoundException {
         List<Floor> list = new ArrayList<>();
         list.add(new Floor(1 , 1 , 1 ,"shoes",10));
         list.add(new Floor(2,1,3,"clothes",25));
@@ -74,8 +69,7 @@ class FloorServiceTest {
     }
 
     @Test
-    void when_2FloorsExist_expect_sizeEqualTo2()
-    {
+    void when_2FloorsExist_expect_sizeEqualTo2() throws NotFoundException {
         List<Floor> list = new ArrayList<>();
         list.add(new Floor(1 , 1 , 1 ,"shoes",10));
         list.add(new Floor(2,1,3,"clothes",25));
@@ -145,7 +139,7 @@ class FloorServiceTest {
     void when_addingFloorWithEmptyFields_expect_IllegalArgumentException()
     {
         FloorDTO F = new FloorDTO( 1 , 1 ,"",10);
-        assertThrows(IllegalArgumentException.class , ()->fs.add_Floor(1,F));
+        assertThrows(IllegalArgumentException.class , ()->fs.addFloor(1,F));
 
     }
 

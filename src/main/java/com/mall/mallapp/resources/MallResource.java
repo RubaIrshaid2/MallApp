@@ -1,29 +1,23 @@
-/**
-
- The MallResource class represents a RESTful web service for managing malls.
- It provides endpoints for retrieving, adding, updating, and deleting malls,
- as well as an endpoint for accessing the floors of a specific mall.
- */
-
 package com.mall.mallapp.resources;
 
 import com.mall.mallapp.DTO.MallDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.exception.ObjectExistsException;
-import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.service.MallService;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.soap.Text;
-
 import java.util.List;
 
+/**
+ *  The MallResource class represents a RESTful web service for managing malls.
+ *  It provides endpoints for retrieving, adding, updating, and deleting malls,
+ *  as well as an endpoint for accessing the floors of a specific mall.
+ */
 @Path("/malls")
 public class MallResource {
 
-    MallService ms = new MallService();
+    private MallService ms = new MallService();
 
     /**
      * Retrieves a list of all malls in the database.
@@ -92,7 +86,7 @@ public class MallResource {
     public Response addMall(MallDTO mall)
     {
         try {
-            MallDTO m = ms.add_Mall(mall);
+            MallDTO m = ms.addMall(mall);
             return Response.ok(m.toJSON(), MediaType.APPLICATION_JSON).build();
         }
         catch(IllegalArgumentException ie)

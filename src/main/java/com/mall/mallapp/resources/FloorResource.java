@@ -1,24 +1,21 @@
+package com.mall.mallapp.resources;
+import com.mall.mallapp.DTO.FloorDTO;
+import com.mall.mallapp.exception.NotFoundException;
+import com.mall.mallapp.service.FloorService;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
 /**
  * Resource class for handling HTTP requests related to floors in a mall.
  * This class uses FloorService and FloorRepo for handling the business logic.
  * It supports GET, POST, PUT, and DELETE requests for floors, and
  * forwards requests related to shops to the ShopResource class.
  */
-package com.mall.mallapp.resources;
-
-import com.mall.mallapp.DTO.FloorDTO;
-import com.mall.mallapp.exception.NotFoundException;
-import com.mall.mallapp.service.FloorService;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.List;
-
 @Path("/")
 public class FloorResource {
 
-    FloorService fs = new FloorService();
+    private FloorService fs = new FloorService();
 
     /**
      * Handles HTTP GET requests for retrieving a list of floors in a mall.
@@ -59,7 +56,7 @@ public class FloorResource {
     public Response addFloor(@PathParam("mall_id") int mall_id ,  FloorDTO floor)
     {
         try {
-            FloorDTO f = fs.add_Floor(mall_id, floor);
+            FloorDTO f = fs.addFloor(mall_id, floor);
             return Response.ok(f.toJSON(), MediaType.APPLICATION_JSON).build();
         }
         catch (Exception e)
@@ -69,11 +66,7 @@ public class FloorResource {
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }
-
-
     }
-
-
     /**
      * Handles HTTP GET requests for retrieving a single floor from a mall.
      *
@@ -100,7 +93,6 @@ public class FloorResource {
                     .build();
         }
     }
-
     /**
      *
      * Handles HTTP PUT requests for updating a floor in a mall.
@@ -132,7 +124,6 @@ public class FloorResource {
                     .build();
         }
     }
-
     /**
      * Handles HTTP DELETE requests for deleting a floor in a mall.
      *Deletes the floor with the given ID.
@@ -157,7 +148,6 @@ public class FloorResource {
                     .build();
         }
     }
-
     /**
      * Returns a ShopResource object for accessing the shops associated with the floor with the given ID.
      * @return a ShopResource object for accessing the shops associated with the floor with the given ID.

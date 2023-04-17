@@ -1,24 +1,17 @@
-/**
- * This class represents a resource for managing shops in a mall.
- *
- */
 package com.mall.mallapp.resources;
-
 import com.mall.mallapp.DTO.ShopDTO;
 import com.mall.mallapp.exception.NotFoundException;
-import com.mall.mallapp.model.Floor;
-import com.mall.mallapp.model.Shop;
 import com.mall.mallapp.service.ShopService;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-
-//@Path("/")
+/**
+ * This class represents a resource for managing shops in a mall.
+ * */
 public class ShopResource {
 
-    ShopService ss = new ShopService();
+    private ShopService ss = new ShopService();
 
     /**
      * Retrieves a list of shops on a specified floor of a mall.
@@ -68,7 +61,7 @@ public class ShopResource {
     public Response addShop(@PathParam("mall_id") int mall_id , @PathParam("floor_id") int floor_id , ShopDTO shop)
     {
         try{
-            ShopDTO s = ss.add_shop(mall_id , floor_id , shop);
+            ShopDTO s = ss.addShop(mall_id , floor_id , shop);
             return Response.ok(s.toJSON(), MediaType.APPLICATION_JSON).build();
         }
         catch (IllegalArgumentException ie)

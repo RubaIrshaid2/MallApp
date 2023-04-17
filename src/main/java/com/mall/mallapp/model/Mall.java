@@ -1,15 +1,14 @@
+package com.mall.mallapp.model;
 /**
  * A class representing a mall.
  */
-package com.mall.mallapp.model;
-
 public class Mall {
 
-    int id;
-    String name ;
-    String address;
-    int number_of_floors;
-    String description;
+    private int id;
+    private String name ;
+    private String address;
+    private int numberOfFloors;
+    private String description;
 
     /**
      * Constructs a new instance of the {@link Mall} class.
@@ -28,7 +27,7 @@ public class Mall {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.number_of_floors = number_of_floors;
+        this.numberOfFloors = number_of_floors;
         this.description = description;
     }
 
@@ -84,16 +83,16 @@ public class Mall {
      * Returns the number of floors in the mall.
      * @return The number of floors in the mall.
      */
-    public int getNumber_of_floors() {
-        return number_of_floors;
+    public int getNumberOfFloors() {
+        return numberOfFloors;
     }
 
     /**
      * Sets the number of floors in the mall.
-     * @param number_of_floors The number of floors in the mall.
+     * @param numberOfFloors The number of floors in the mall.
      */
-    public void setNumber_of_floors(int number_of_floors) {
-        this.number_of_floors = number_of_floors;
+    public void setNumberOfFloors(int numberOfFloors) {
+        this.numberOfFloors = numberOfFloors;
     }
 
     /**
@@ -130,7 +129,7 @@ public class Mall {
         Mall other = (Mall) obj;
 
         boolean b = name.equals(other.name) && address.equals(other.address) &&
-                number_of_floors== other.number_of_floors &&
+                numberOfFloors == other.numberOfFloors &&
                 description.equals(other.description);
         System.out.println(b);
         return b;

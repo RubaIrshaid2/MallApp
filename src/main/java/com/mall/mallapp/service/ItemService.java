@@ -1,21 +1,18 @@
-/**
- * This class contains methods for handling Item related operations such as getting, adding, updating, and deleting Items.
- */
 package com.mall.mallapp.service;
-
 import com.mall.mallapp.DTO.ItemDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.mapper.ItemMapperImpl;
 import com.mall.mallapp.model.Item;
 import com.mall.mallapp.reposotry.ItemRepo;
-
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This class contains methods for handling Item related operations such as getting, adding, updating, and deleting Items.
+ */
 public class ItemService {
 
-    ItemRepo itemRepo = new ItemRepo();
-    ItemMapperImpl itemMapper = new ItemMapperImpl();
+    private ItemRepo itemRepo = new ItemRepo();
+    private ItemMapperImpl itemMapper = new ItemMapperImpl();
 
     /**
      * Default constructor
@@ -75,11 +72,11 @@ public class ItemService {
      * @return An ItemDTO object representing the newly added Item
      * @throws IllegalArgumentException If the shop ID is less than 1 or if the name of the new Item is empty or null
      */
-    public ItemDTO add_item(int shop_id ,ItemDTO item) throws IllegalArgumentException
+    public ItemDTO addItem(int shop_id , ItemDTO item) throws IllegalArgumentException
     {
         if(shop_id < 1 || item.getName().isEmpty() || item.getName()==null)
             throw new IllegalArgumentException("shop id or data of the new item is not correct");
-        return itemMapper.ToDto(itemRepo.add_item(shop_id, itemMapper.ToEntity(item)));
+        return itemMapper.ToDto(itemRepo.addItem(shop_id, itemMapper.ToEntity(item)));
     }
 
     /**

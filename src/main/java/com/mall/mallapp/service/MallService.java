@@ -1,26 +1,21 @@
-/**
- * The MallService class provides methods for retrieving, adding, updating, and deleting malls.
- */
 package com.mall.mallapp.service;
-
-
 import com.mall.mallapp.DTO.MallDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.mapper.MallMapperImpl;
 import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.reposotry.MallRepo;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
+/**
+ * The MallService class provides methods for retrieving, adding, updating, and deleting malls.
+ */
 public class MallService {
 
     /**
      * The mall repository instance used to interact with the mall database.
      */
-    MallRepo mallRepo = new MallRepo();
+    private MallRepo mallRepo = new MallRepo();
     /**
      * The mall mapper instance used to convert between Mall and MallDTO objects.
      */
@@ -81,7 +76,7 @@ public class MallService {
      * @throws IllegalArgumentException if the data of the mall is not correct
      * @throws ObjectExistsException if the mall is already exist by checking the name
      */
-    public MallDTO add_Mall(MallDTO mall) throws IllegalArgumentException, ObjectExistsException
+    public MallDTO addMall(MallDTO mall) throws IllegalArgumentException, ObjectExistsException
     {
         if (mall.getName().isEmpty() || mall.getAddress().isEmpty() || mall.getName() == null || mall.getAddress() == null) {
             throw new IllegalArgumentException("the data of the mall is not correct");

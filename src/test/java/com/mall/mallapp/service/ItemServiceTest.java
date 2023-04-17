@@ -1,15 +1,11 @@
 package com.mall.mallapp.service;
 
 import com.mall.mallapp.DTO.ItemDTO;
-import com.mall.mallapp.DTO.ShopDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.model.Item;
-import com.mall.mallapp.model.Shop;
 import com.mall.mallapp.reposotry.ItemRepo;
-import com.mall.mallapp.reposotry.ShopRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -115,7 +111,7 @@ class ItemServiceTest {
     void when_addingItemWithEmptyFields_expect_IllegalArgumentException()
     {
         ItemDTO iDto = new ItemDTO("",22,"desc",12);
-        assertThrows(IllegalArgumentException.class , ()-> is.add_item(1,iDto));
+        assertThrows(IllegalArgumentException.class , ()-> is.addItem(1,iDto));
     }
 
     @Test

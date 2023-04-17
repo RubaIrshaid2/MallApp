@@ -1,18 +1,15 @@
+package com.mall.mallapp.DTO;
+import com.google.gson.Gson;
 /**
  * Represents a data transfer object for a shop in a mall.
  */
-package com.mall.mallapp.DTO;
-
-import com.google.gson.Gson;
-import com.mall.mallapp.model.Shop;
-
 public class ShopDTO {
 
-    int floor_id;
-    int mall_id;
-    String shop_name;
-    String desc;
-    String opening_hours;
+    private int floorId;
+    private int mallId;
+    private String shopName;
+    private String desc;
+    private String openingHours;
 
     /**
      * Default constructor for the ShopDTO class.
@@ -29,11 +26,11 @@ public class ShopDTO {
      * @param opening_hours the opening hours of the shop
      */
     public ShopDTO(int floor_id, int mall_id, String shop_name, String desc, String opening_hours) {
-        this.floor_id = floor_id;
-        this.mall_id = mall_id;
-        this.shop_name = shop_name;
+        this.floorId = floor_id;
+        this.mallId = mall_id;
+        this.shopName = shop_name;
         this.desc = desc;
-        this.opening_hours = opening_hours;
+        this.openingHours = opening_hours;
     }
 
     /**
@@ -41,17 +38,17 @@ public class ShopDTO {
      *
      * @return the floor ID
      */
-    public int getFloor_id() {
-        return floor_id;
+    public int getFloorId() {
+        return floorId;
     }
 
     /**
      * Sets the ID of the floor where the shop is located.
      *
-     * @param floor_id the floor ID
+     * @param floorId the floor ID
      */
-    public void setFloor_id(int floor_id) {
-        this.floor_id = floor_id;
+    public void setFloorId(int floorId) {
+        this.floorId = floorId;
     }
 
     /**
@@ -59,17 +56,17 @@ public class ShopDTO {
      *
      * @return the mall ID
      */
-    public int getMall_id() {
-        return mall_id;
+    public int getMallId() {
+        return mallId;
     }
 
     /**
      * Sets the ID of the mall where the shop is located.
      *
-     * @param mall_id the mall ID
+     * @param mallId the mall ID
      */
-    public void setMall_id(int mall_id) {
-        this.mall_id = mall_id;
+    public void setMallId(int mallId) {
+        this.mallId = mallId;
     }
 
     /**
@@ -77,17 +74,17 @@ public class ShopDTO {
      *
      * @return the shop name
      */
-    public String getShop_name() {
-        return shop_name;
+    public String getShopName() {
+        return shopName;
     }
 
     /**
      * Sets the name of the shop.
      *
-     * @param shop_name the shop name
+     * @param shopName the shop name
      */
-    public void setShop_name(String shop_name) {
-        this.shop_name = shop_name;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
     /**
@@ -113,17 +110,17 @@ public class ShopDTO {
      *
      * @return the shop opening hours
      */
-    public String getOpening_hours() {
-        return opening_hours;
+    public String getOpeningHours() {
+        return openingHours;
     }
 
     /**
      * Sets the opening hours of the shop.
      *
-     * @param opening_hours the shop opening hours
+     * @param openingHours the shop opening hours
      */
-    public void setOpening_hours(String opening_hours) {
-        this.opening_hours = opening_hours;
+    public void setOpeningHours(String openingHours) {
+        this.openingHours = openingHours;
     }
 
     /**
@@ -154,11 +151,11 @@ public class ShopDTO {
 
         ShopDTO other = (ShopDTO) obj;
 
-        boolean b = floor_id == other.floor_id &&
-                    mall_id == other.mall_id &&
-                shop_name.equals(other.shop_name) &&
+        boolean b = floorId == other.floorId &&
+                    mallId == other.mallId &&
+                shopName.equals(other.shopName) &&
                 desc.equals(other.desc) &&
-                opening_hours.equals(other.opening_hours);
+                openingHours.equals(other.openingHours);
         System.out.println(b);
         return b;
     }

@@ -1,23 +1,19 @@
-/**
- *The FloorService class provides methods to interact with the floor data in the database.
- */
 package com.mall.mallapp.service;
-
 import com.mall.mallapp.DTO.FloorDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.mapper.FloorMapperImpl;
 import com.mall.mallapp.model.Floor;
-import com.mall.mallapp.model.Mall;
 import com.mall.mallapp.reposotry.FloorRepo;
-
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ *The FloorService class provides methods to interact with the floor data in the database.
+ */
 public class FloorService {
 
-    FloorRepo floorRepo = new FloorRepo();
-    FloorMapperImpl floorMapper = new FloorMapperImpl();
+    private FloorRepo floorRepo = new FloorRepo();
+    private FloorMapperImpl floorMapper = new FloorMapperImpl();
 
     /**
      * Default constructor for FloorService.
@@ -80,9 +76,9 @@ public class FloorService {
      * @return the FloorDTO object that was added
      * @throws IllegalArgumentException if the mall_id or data is not correct
      */
-    public FloorDTO add_Floor(int Mall_id , FloorDTO floor) throws IllegalArgumentException , ObjectExistsException
+    public FloorDTO addFloor(int Mall_id , FloorDTO floor) throws IllegalArgumentException , ObjectExistsException
     {
-        if(Mall_id <1 || floor.getFloor_number()<1 || floor.getCategory().isEmpty())
+        if(Mall_id <1 || floor.getFloorNumber()<1 || floor.getCategory().isEmpty())
             throw new IllegalArgumentException("Error : mall id or data is not correct");
         try {
             return floorMapper.ToDto(floorRepo.add_Floor(Mall_id, floorMapper.ToEntity(floor)));
@@ -104,7 +100,7 @@ public class FloorService {
      */
     public void updateFloor(int mall_id , int id , FloorDTO floor) throws IllegalArgumentException
     {
-        if(id <1 || floor.getFloor_number()<1 || floor.getCategory().isEmpty())
+        if(id <1 || floor.getFloorNumber()<1 || floor.getCategory().isEmpty())
             throw new IllegalArgumentException("Error : mall id or data is not correct");
         floorRepo.updateFloor(mall_id , id,floorMapper.ToEntity(floor));
     }

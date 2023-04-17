@@ -1,16 +1,12 @@
-
+package com.mall.mallapp.mapper;
+import com.mall.mallapp.DTO.FloorDTO;
+import com.mall.mallapp.model.Floor;
+import org.mapstruct.Mapper;
 /**
  * Implementation of the {@link FloorMapper} interface.
  * This class maps between {@link Floor} and {@link FloorDTO} classes using the methods defined in the
  * {@link FloorMapper} interface.
  */
-
-package com.mall.mallapp.mapper;
-
-import com.mall.mallapp.DTO.FloorDTO;
-import com.mall.mallapp.model.Floor;
-import org.mapstruct.Mapper;
-
 @Mapper
 public interface FloorMapper {
 
