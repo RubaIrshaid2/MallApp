@@ -1,5 +1,5 @@
 package com.mall.mallapp.resources;
-import com.mall.mallapp.DTO.ItemDTO;
+import com.mall.mallapp.dto.ItemDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.service.ItemService;
 import javax.ws.rs.*;

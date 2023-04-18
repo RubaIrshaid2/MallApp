@@ -1,5 +1,5 @@
 package com.mall.mallapp.resources;
-import com.mall.mallapp.DTO.FloorDTO;
+import com.mall.mallapp.dto.FloorDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.service.FloorService;
 import javax.ws.rs.*;

@@ -1,9 +1,9 @@
 package com.mall.mallapp.service;
-import com.mall.mallapp.DTO.ShopDTO;
+import com.mall.mallapp.dto.ShopDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.mapper.ShopMapperImpl;
 import com.mall.mallapp.model.Shop;
-import com.mall.mallapp.reposotry.ShopRepo;
+import com.mall.mallapp.repository.ShopRepo;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -33,17 +33,17 @@ public class ShopService {
 
     /**
      * Gets a list of all the shops in a mall and floor.
-     * @param mall_id ID of the mall
-     * @param floor_id ID of the floor
+     * @param mallId ID of the mall
+     * @param floorId ID of the floor
      * @return list of ShopDTOs representing the shops
      * @throws IllegalArgumentException if mall or floor ID is less than 1
      * @throws NotFoundException if no shops are found for the given mall and floor
      */
-    public List<ShopDTO> getShops(int mall_id , int floor_id) throws IllegalArgumentException , NotFoundException {
+    public List<ShopDTO> getShops(int mallId , int floorId) throws IllegalArgumentException , NotFoundException {
 
-        if(mall_id < 1 || floor_id < 1)
+        if(mallId < 1 || floorId < 1)
             throw new IllegalArgumentException("mall or floor id is not correct");
-        List<Shop> shopList =  shopRepo.getShops(mall_id , floor_id);
+        List<Shop> shopList =  shopRepo.getShops(mallId , floorId);
         List<ShopDTO> dtoList = new ArrayList<>();
 
         for(Shop m : shopList)
@@ -56,18 +56,18 @@ public class ShopService {
 
     /**
      * Gets a list of all the shops in a mall and floor.
-     * @param mall_id ID of the mall
-     * @param floor_id ID of the floor
+     * @param mallId ID of the mall
+     * @param floorId ID of the floor
      * @return list of ShopDTOs representing the shops
      * @throws IllegalArgumentException if mall or floor ID is less than 1
      * @throws NotFoundException if no shops are found for the given mall and floor
      */
-    public ShopDTO getShop(int mall_id , int floor_id , int shop_id) throws IllegalArgumentException,NotFoundException
+    public ShopDTO getShop(int mallId , int floorId , int shopId) throws IllegalArgumentException,NotFoundException
     {
-        if(shop_id < 1 || mall_id < 1 ||floor_id <1  )
+        if(shopId < 1 || mallId < 1 ||floorId <1  )
             throw new IllegalArgumentException("mall , floor or shop id is not correct");
 
-        ShopDTO sDTO = shopMapper.ToDto(shopRepo.getShop(shop_id));
+        ShopDTO sDTO = shopMapper.ToDto(shopRepo.getShop(shopId));
         if(sDTO == null)
             throw new NotFoundException("Error : the Shop not found");
 

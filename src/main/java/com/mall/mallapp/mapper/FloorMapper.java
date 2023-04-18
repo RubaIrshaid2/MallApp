@@ -1,5 +1,5 @@
 package com.mall.mallapp.mapper;
-import com.mall.mallapp.DTO.FloorDTO;
+import com.mall.mallapp.dto.FloorDTO;
 import com.mall.mallapp.model.Floor;
 import org.mapstruct.Mapper;
 /**

@@ -1,4 +1,4 @@
-package com.mall.mallapp.DTO;
+package com.mall.mallapp.dto;
 import com.google.gson.Gson;
 
 /**
@@ -20,14 +20,14 @@ public class MallDTO {
      * Constructor for MallDTO that takes in parameters for all of the mall's attributes.
      * @param name The name of the mall.
      * @param address The address of the mall.
-     * @param number_of_floors The number of floors in the mall.
+     * @param numberOfFloors The number of floors in the mall.
      * @param description A description of the mall.
      */
 
-    public MallDTO(String name, String address, int number_of_floors, String description) {
+    public MallDTO(String name, String address, int numberOfFloors, String description) {
         this.name = name;
         this.address = address;
-        this.numberOfFloors = number_of_floors;
+        this.numberOfFloors = numberOfFloors;
         this.description = description;
     }
 

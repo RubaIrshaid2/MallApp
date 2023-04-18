@@ -1,9 +1,10 @@
 package com.mall.mallapp.service;
 
-import com.mall.mallapp.DTO.MallDTO;
+import com.mall.mallapp.dto.MallDTO;
 import com.mall.mallapp.exception.NotFoundException;
+import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.model.Mall;
-import com.mall.mallapp.reposotry.MallRepo;
+import com.mall.mallapp.repository.MallRepo;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,13 +35,12 @@ class MallServiceTest {
 
 
     @Test
-    void When_mallsAreExist_Expect_returningTheMalls()
-    {
+    void When_mallsAreExist_Expect_returningTheMalls() throws NotFoundException {
         List<Mall> list = new ArrayList<>();
         list.add(new Mall(1,"City center Mall" ,"Hebron", 13 , "in the center of the city" ));
         list.add(new Mall(2,"Ramallah Mall" , "Ramallah" ,30 ,"ramallah desc" ));
 
-        when(dataBaseService.GetMalls()).thenReturn(list);
+        when(dataBaseService.getMalls()).thenReturn(list);
 
         List<MallDTO> actualList = ms.getAllMalls();
 
@@ -50,7 +50,7 @@ class MallServiceTest {
 
         assertEquals(Expectedlist , actualList);
 
-        verify(dataBaseService).GetMalls();
+        verify(dataBaseService).getMalls();
 
     }
     @Test
@@ -58,38 +58,36 @@ class MallServiceTest {
     {
         List<Mall> list = new ArrayList<>();
 
-        when(dataBaseService.GetMalls()).thenReturn(list);
+        when(dataBaseService.getMalls()).thenReturn(list);
 
 
         assertThrows(NotFoundException.class , ()->ms.getAllMalls());
 
-       verify(dataBaseService).GetMalls();
+       verify(dataBaseService).getMalls();
     }
 
     @Test
-    void when_2mallsExist_expect_sizeEqualTo2()
-    {
+    void when_2mallsExist_expect_sizeEqualTo2() throws NotFoundException {
         List<Mall> list = new ArrayList<>();
         list.add(new Mall(1,"City center Mall" ,"Hebron", 13 , "in the center of the city" ));
         list.add(new Mall(2,"Ramallah Mall" , "Ramallah" ,30 ,"ramallah desc" ));
 
-        when(dataBaseService.GetMalls()).thenReturn(list);
+        when(dataBaseService.getMalls()).thenReturn(list);
 
         List<MallDTO> actualList = ms.getAllMalls();
 
         assertEquals(2 , actualList.size());
 
-        verify(dataBaseService).GetMalls();
+        verify(dataBaseService).getMalls();
     }
 
     @Test
-    void when_mallsReturned_expect_beingMallDTO()
-    {
+    void when_mallsReturned_expect_beingMallDTO() throws NotFoundException {
         List<Mall> list = new ArrayList<>();
         list.add(new Mall(1,"City center Mall" ,"Hebron", 13 , "in the center of the city" ));
         list.add(new Mall(2,"Ramallah Mall" , "Ramallah" ,30 ,"ramallah desc" ));
 
-        when(dataBaseService.GetMalls()).thenReturn(list);
+        when(dataBaseService.getMalls()).thenReturn(list);
 
         List<MallDTO> actualList = ms.getAllMalls();
 
@@ -107,10 +105,9 @@ class MallServiceTest {
 
 
     @Test
-    void When_mallIdIsCorrect_expect_returningTheMall()
-    {
+    void When_mallIdIsCorrect_expect_returningTheMall() throws NotFoundException {
         Mall m = new Mall(1,"lacasa Mall","Ramallah",10,"lacasa desc");
-        when(dataBaseService.GetMall(1)).thenReturn(m);
+        when(dataBaseService.getMall(1)).thenReturn(m);
 
         MallDTO Expected = new MallDTO("lacasa Mall","Ramallah",10,"lacasa desc");
         MallDTO actual = ms.getMall(1);
@@ -119,10 +116,9 @@ class MallServiceTest {
     }
 
     @Test
-    void when_getMallIsCalled_expect_returningDTOMall()
-    {
+    void when_getMallIsCalled_expect_returningDTOMall() throws NotFoundException {
         Mall m = new Mall(1,"lacasa Mall","Ramallah",10,"lacasa desc");
-        when(dataBaseService.GetMall(1)).thenReturn(m);
+        when(dataBaseService.getMall(1)).thenReturn(m);
 
         assertInstanceOf(MallDTO.class , ms.getMall(1));
     }
@@ -130,18 +126,17 @@ class MallServiceTest {
     @Test
     void when_gettingMallWithWrongId_expect_NotFoundException()
     {
-        when(dataBaseService.GetMall(30)).thenReturn(null);
-        when(dataBaseService.GetMall(-1)).thenReturn(null);
+        when(dataBaseService.getMall(30)).thenReturn(null);
+        when(dataBaseService.getMall(-1)).thenReturn(null);
         assertAll(
                 ()->assertThrows(NotFoundException.class ,()->ms.getMall(30)),
                 ()->assertThrows(NotFoundException.class ,()->ms.getMall(-1))
         );
     }
     @Test
-    void When_addingMall_expect_retrieveTheSameMall()
-    {
+    void When_addingMall_expect_retrieveTheSameMall() throws ObjectExistsException {
         Mall newMall = new Mall(15 , "new Mall" , "address" , 123 , "desc");
-        when(dataBaseService.AddMAll(newMall)).thenReturn(newMall);
+        when(dataBaseService.addMAll(newMall)).thenReturn(newMall);
 
         MallDTO expected = new MallDTO( "new Mall" , "address" , 123 , "desc");
         MallDTO actual = ms.addMall(expected);
@@ -173,7 +168,7 @@ class MallServiceTest {
     @Test
     void When_DeleteMall_expect_returningDeletedsuccessfully()
     {
-        when(dataBaseService.DeleteMall(1)).thenReturn("Deleted successfully");
+        when(dataBaseService.deleteMall(1)).thenReturn("Deleted successfully");
 
         assertEquals("Deleted successfully",ms.deleteMall(1));
     }

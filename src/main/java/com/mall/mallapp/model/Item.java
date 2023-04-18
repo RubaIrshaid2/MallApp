@@ -16,19 +16,19 @@ public class Item {
     /**
      * Constructs a new Item object with the given parameters.
      * @param id the item ID
-     * @param shop_id the ID of the shop selling the item
+     * @param shopId the ID of the shop selling the item
      * @param name the name of the item
      * @param price the price of the item
      * @param desc the description of the item
-     * @param sale_pers the sale percentage of the item
+     * @param salePers the sale percentage of the item
      */
-    public Item(int id, int shop_id, String name, int price, String desc, int sale_pers) {
+    public Item(int id, int shopId, String name, int price, String desc, int salePers) {
         this.id = id;
-        this.shopId = shop_id;
+        this.shopId = shopId;
         this.name = name;
         this.price = price;
         this.desc = desc;
-        this.salePers = sale_pers;
+        this.salePers = salePers;
     }
 
     /**

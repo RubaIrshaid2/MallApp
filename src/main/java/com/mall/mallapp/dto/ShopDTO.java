@@ -1,4 +1,4 @@
-package com.mall.mallapp.DTO;
+package com.mall.mallapp.dto;
 import com.google.gson.Gson;
 /**
  * Represents a data transfer object for a shop in a mall.
@@ -19,18 +19,18 @@ public class ShopDTO {
     /**
      * Constructor for the ShopDTO class.
      *
-     * @param floor_id the ID of the floor where the shop is located
-     * @param mall_id the ID of the mall where the shop is located
-     * @param shop_name the name of the shop
+     * @param floorId the ID of the floor where the shop is located
+     * @param mallId the ID of the mall where the shop is located
+     * @param shopName the name of the shop
      * @param desc the description of the shop
-     * @param opening_hours the opening hours of the shop
+     * @param openingHours the opening hours of the shop
      */
-    public ShopDTO(int floor_id, int mall_id, String shop_name, String desc, String opening_hours) {
-        this.floorId = floor_id;
-        this.mallId = mall_id;
-        this.shopName = shop_name;
+    public ShopDTO(int floorId, int mallId, String shopName, String desc, String openingHours) {
+        this.floorId = floorId;
+        this.mallId = mallId;
+        this.shopName = shopName;
         this.desc = desc;
-        this.openingHours = opening_hours;
+        this.openingHours = openingHours;
     }
 
     /**

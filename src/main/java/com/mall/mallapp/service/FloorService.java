@@ -1,10 +1,10 @@
 package com.mall.mallapp.service;
-import com.mall.mallapp.DTO.FloorDTO;
+import com.mall.mallapp.dto.FloorDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.mapper.FloorMapperImpl;
 import com.mall.mallapp.model.Floor;
-import com.mall.mallapp.reposotry.FloorRepo;
+import com.mall.mallapp.repository.FloorRepo;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -32,14 +32,14 @@ public class FloorService {
     /**
      * Retrieves a list of all floors for the specified mall.
      *
-     * @param mall_id the id of the mall to retrieve floors for
+     * @param mallId the id of the mall to retrieve floors for
      * @return a list of FloorDTO objects for the mall
      * @throws NotFoundException if no floors are found for the mall
      */
-    public List<FloorDTO> getFloors(int mall_id) throws NotFoundException
+    public List<FloorDTO> getFloors(int mallId) throws NotFoundException
     {
         List<FloorDTO> dtoList = new ArrayList<>();
-        List<Floor> floorList = floorRepo.getFloors(mall_id);
+        List<Floor> floorList = floorRepo.getFloors(mallId);
 
         for(Floor m : floorList)
             dtoList.add(floorMapper.ToDto(m));
@@ -52,17 +52,17 @@ public class FloorService {
     /**
      * Retrieves a single floor for the specified mall and floor number.
      *
-     * @param mall_id the id of the mall to retrieve the floor for
-     * @param floor_number the floor number to retrieve
+     * @param mallId the id of the mall to retrieve the floor for
+     * @param floorNumber the floor number to retrieve
      * @return the FloorDTO object for the specified mall and floor number
      * @throws IllegalArgumentException if either the mall_id or floor_number is less than 1
      * @throws NotFoundException if the floor is not found
      */
-    public FloorDTO getFloor(int mall_id , int floor_number) throws IllegalArgumentException,NotFoundException
+    public FloorDTO getFloor(int mallId , int floorNumber) throws IllegalArgumentException,NotFoundException
     {
-        if(mall_id < 1 || floor_number < 1)
+        if(mallId < 1 || floorNumber < 1)
             throw new IllegalArgumentException("mall id or floor number is not correct");
-        FloorDTO floor = floorMapper.ToDto(floorRepo.getFloor(mall_id, floor_number));
+        FloorDTO floor = floorMapper.ToDto(floorRepo.getFloor(mallId, floorNumber));
         if(floor == null)
             throw new NotFoundException("Error : the floor not found");
         return floor;
@@ -71,17 +71,17 @@ public class FloorService {
     /**
      * Adds a floor to the specified mall.
      *
-     * @param Mall_id the id of the mall to add the floor to
+     * @param mallId the id of the mall to add the floor to
      * @param floor the FloorDTO object to add
      * @return the FloorDTO object that was added
      * @throws IllegalArgumentException if the mall_id or data is not correct
      */
-    public FloorDTO addFloor(int Mall_id , FloorDTO floor) throws IllegalArgumentException , ObjectExistsException
+    public FloorDTO addFloor(int mallId , FloorDTO floor) throws IllegalArgumentException , ObjectExistsException
     {
-        if(Mall_id <1 || floor.getFloorNumber()<1 || floor.getCategory().isEmpty())
+        if(mallId <1 || floor.getFloorNumber()<1 || floor.getCategory().isEmpty())
             throw new IllegalArgumentException("Error : mall id or data is not correct");
         try {
-            return floorMapper.ToDto(floorRepo.add_Floor(Mall_id, floorMapper.ToEntity(floor)));
+            return floorMapper.ToDto(floorRepo.addFloor(mallId, floorMapper.ToEntity(floor)));
         }
         catch (ObjectExistsException oe)
         {
@@ -93,16 +93,16 @@ public class FloorService {
     /**
      *
      * Update a floor with given mall_id and id with new information.
-     * @param mall_id The ID of the mall where the floor belongs.
+     * @param mallId The ID of the mall where the floor belongs.
      * @param id The ID of the floor to be updated.
      * @param floor The new information of the floor.
      * @throws IllegalArgumentException if the mall_id, id or data in the FloorDTO object are not valid.
      */
-    public void updateFloor(int mall_id , int id , FloorDTO floor) throws IllegalArgumentException
+    public void updateFloor(int mallId , int id , FloorDTO floor) throws IllegalArgumentException
     {
         if(id <1 || floor.getFloorNumber()<1 || floor.getCategory().isEmpty())
             throw new IllegalArgumentException("Error : mall id or data is not correct");
-        floorRepo.updateFloor(mall_id , id,floorMapper.ToEntity(floor));
+        floorRepo.updateFloor(mallId , id,floorMapper.ToEntity(floor));
     }
 
     /**

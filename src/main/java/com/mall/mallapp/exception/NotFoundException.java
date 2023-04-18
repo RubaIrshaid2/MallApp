@@ -9,8 +9,8 @@ public class NotFoundException extends Exception{
      *
      * @param message the detail message.
      */
-    public NotFoundException(String s)
+    public NotFoundException(String message)
     {
-        super(s);
+        super(message);
     }
 }

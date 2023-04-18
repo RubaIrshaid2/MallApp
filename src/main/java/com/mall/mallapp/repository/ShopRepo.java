@@ -1,4 +1,4 @@
-package com.mall.mallapp.reposotry;
+package com.mall.mallapp.repository;
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
@@ -58,11 +58,11 @@ public class ShopRepo {
     /**
      * Returns a list of all the shops in the given mall and floor.
      *
-     * @param mall_id  the ID of the mall
-     * @param floor_id the ID of the floor
+     * @param mallId  the ID of the mall
+     * @param floorId the ID of the floor
      * @return a list of {@link Shop} objects
      */
-    public List<Shop> getShops(int mall_id , int floor_id) {
+    public List<Shop> getShops(int mallId , int floorId) {
 
         List<Shop> ShopList = new ArrayList<Shop>() ;
 
@@ -84,20 +84,19 @@ public class ShopRepo {
             System.out.println("Error: " + e.getMessage());
         }
         List<Shop> filteredList = ShopList.stream()
-                .filter(shop -> shop.getMall_id() == mall_id && shop.getFloor_id() == floor_id)
+                .filter(shop -> shop.getMallId() == mallId && shop.getFloorId() == floorId)
                 .collect(Collectors.toList());
         return filteredList;
     }
 
     /**
      * Returns the shop with the given ID.
-     *
-     * @param shop_id the ID of the shop
+     * @param shopId the ID of the shop
      * @return the {@link Shop} object with the given ID, or {@code null} if no such object exists
      */
-    public Shop getShop(int shop_id)
+    public Shop getShop(int shopId)
     {
-        Key key = new Key(namespace,set, shop_id);
+        Key key = new Key(namespace,set, shopId);
         Record record = AerospikeDB.getClient().get(null, key);
         if(record==null) {
             return null;
@@ -116,9 +115,9 @@ public class ShopRepo {
      */
     public Shop addShop(int mallId , int floorId , Shop shop)
     {
-        shop.setShop_id(nextId);
-        shop.setFloor_id(floorId);
-        shop.setMall_id(mallId);
+        shop.setShopId(nextId);
+        shop.setFloorId(floorId);
+        shop.setMallId(mallId);
         WritePolicy writePolicy = new WritePolicy();
         writePolicy.sendKey = true;
         Key key = new Key(namespace , set, nextId);
@@ -172,12 +171,12 @@ public class ShopRepo {
      */
 
     private void binsUpdateCreate(Shop shop, Key key, WritePolicy Policy) {
-        Bin floor_id = new Bin("floor_id" , shop.getFloor_id());
-        Bin mall_id = new Bin("mall_id" , shop.getMall_id());
-        Bin shop_name = new Bin ("shop_name" , shop.getShop_name());
+        Bin floorId = new Bin("floor_id" , shop.getFloorId());
+        Bin mallId = new Bin("mall_id" , shop.getMallId());
+        Bin shopName = new Bin ("shop_name" , shop.getShopName());
         Bin desc = new Bin("desc", shop.getDesc());
-        Bin opening_hours = new Bin("opening_hours", shop.getOpening_hours());
+        Bin openingHours = new Bin("opening_hours", shop.getOpeningHours());
 
-        AerospikeDB.getClient().put(Policy,key,floor_id,mall_id,shop_name,desc,opening_hours);
+        AerospikeDB.getClient().put(Policy,key,floorId,mallId,shopName,desc,openingHours);
     }
 }

@@ -1,5 +1,4 @@
-
-package com.mall.mallapp.DTO;
+package com.mall.mallapp.dto;
 import com.google.gson.Gson;
 /**
  * The `ItemDTO` class represents a data transfer object for an item in a shop. It contains
@@ -23,13 +22,13 @@ public class ItemDTO {
      * @param name the name of the item
      * @param price the price of the item
      * @param desc the description of the item
-     * @param sale_pers the sale percentage of the item
+     * @param salePers the sale percentage of the item
      */
-    public ItemDTO(String name, int price, String desc, int sale_pers) {
+    public ItemDTO(String name, int price, String desc, int salePers) {
         this.name = name;
         this.price = price;
         this.desc = desc;
-        this.salePers = sale_pers;
+        this.salePers = salePers;
     }
 
     /**

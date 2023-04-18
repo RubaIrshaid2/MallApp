@@ -9,8 +9,8 @@ public class ObjectExistsException extends Exception{
      *
      * @param message the detail message. The detail message is saved for later retrieval by the getMessage() method.
      */
-    public ObjectExistsException(String s)
+    public ObjectExistsException(String message)
     {
-        super(s);
+        super(message);
     }
 }

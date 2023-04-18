@@ -1,10 +1,10 @@
 package com.mall.mallapp.service;
-import com.mall.mallapp.DTO.MallDTO;
+import com.mall.mallapp.dto.MallDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.mapper.MallMapperImpl;
 import com.mall.mallapp.model.Mall;
-import com.mall.mallapp.reposotry.MallRepo;
+import com.mall.mallapp.repository.MallRepo;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -43,7 +43,7 @@ public class MallService {
      */
     public List<MallDTO> getAllMalls() throws NotFoundException
     {
-        List<Mall> mall = mallRepo.GetMalls();
+        List<Mall> mall = mallRepo.getMalls();
         List<MallDTO> dtoList = new ArrayList<MallDTO>();
 
         for(Mall m : mall)
@@ -62,7 +62,7 @@ public class MallService {
      */
     public MallDTO getMall(int id) throws NotFoundException
     {
-        MallDTO mall = mallMapper.ToDto(mallRepo.GetMall(id));
+        MallDTO mall = mallMapper.ToDto(mallRepo.getMall(id));
 
         if(mall == null)
             throw new NotFoundException("error : mall not found");
@@ -83,7 +83,7 @@ public class MallService {
         }
         try
         {
-            return mallMapper.ToDto(mallRepo.AddMAll(mallMapper.toEntity(mall)));
+            return mallMapper.ToDto(mallRepo.addMAll(mallMapper.toEntity(mall)));
         }
         catch (ObjectExistsException oe)
         {
@@ -103,7 +103,7 @@ public class MallService {
         if (id < 1 || mall.getName().isEmpty() || mall.getAddress().isEmpty() || mall.getName() == null || mall.getAddress() == null) {
             throw new IllegalArgumentException("incorrect id or data");
         }
-        mallRepo.UpdateMall(id,mallMapper.toEntity(mall));
+        mallRepo.updateMall(id,mallMapper.toEntity(mall));
     }
 
     /**
@@ -117,6 +117,6 @@ public class MallService {
         if (id < 1 ) {
             throw new IllegalArgumentException("incorrect id");
         }
-        return mallRepo.DeleteMall(id);
+        return mallRepo.deleteMall(id);
     }
 }

@@ -1,5 +1,5 @@
 package com.mall.mallapp.resources;
-import com.mall.mallapp.DTO.ShopDTO;
+import com.mall.mallapp.dto.ShopDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.service.ShopService;
 import javax.ws.rs.*;
@@ -16,19 +16,19 @@ public class ShopResource {
     /**
      * Retrieves a list of shops on a specified floor of a mall.
      *
-     * @param mall_id The ID of the mall.
-     * @param floor_id The ID of the floor.
+     * @param mallId The ID of the mall.
+     * @param floorId The ID of the floor.
      * @return A Response object containing a list of ShopDTO objects in JSON format, with a success status code.
      *         If the request is unsuccessful, the Response object contains an error message and an appropriate status code.
      */
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getShops(@PathParam("mall_id") int mall_id , @PathParam("floor_id") int floor_id)
+    public Response getShops(@PathParam("mall_id") int mallId , @PathParam("floor_id") int floorId)
     {
         try
         {
-            List<ShopDTO> shopList = ss.getShops(mall_id,floor_id);
+            List<ShopDTO> shopList = ss.getShops(mallId,floorId);
             return Response.ok(shopList.toArray(), MediaType.APPLICATION_JSON).build();
         }
         catch (IllegalArgumentException ie)

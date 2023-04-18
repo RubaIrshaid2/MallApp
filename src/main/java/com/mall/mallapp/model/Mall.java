@@ -20,14 +20,14 @@ public class Mall {
      * @param id The ID of the mall.
      * @param name The name of the mall.
      * @param address The address of the mall.
-     * @param number_of_floors The number of floors in the mall.
+     * @param numberOfFloors The number of floors in the mall.
      * @param description The description of the mall.
      */
-    public Mall(int id, String name, String address, int number_of_floors, String description) {
+    public Mall(int id, String name, String address, int numberOfFloors, String description) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.numberOfFloors = number_of_floors;
+        this.numberOfFloors = numberOfFloors;
         this.description = description;
     }
 

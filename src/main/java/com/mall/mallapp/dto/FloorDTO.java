@@ -1,4 +1,4 @@
-package com.mall.mallapp.DTO;
+package com.mall.mallapp.dto;
 import com.google.gson.Gson;
 
 /**
@@ -8,10 +8,8 @@ import com.google.gson.Gson;
 public class FloorDTO {
     private int mallId;
     private int floorNumber;
-
     private String category;
     private int numberOfShops;
-
     /**
      * Default constructor for creating an empty instance of the class.
      */
@@ -20,16 +18,16 @@ public class FloorDTO {
     /**
      * Constructor for creating an instance of the class with provided values.
      *
-     * @param mall_id the ID of the mall where the floor is located
-     * @param floor_number the floor number
+     * @param mallId the ID of the mall where the floor is located
+     * @param floorNumber the floor number
      * @param category the category of the floor
-     * @param number_of_shops the number of shops on the floor
+     * @param numberOfShops the number of shops on the floor
      */
-    public FloorDTO(int mall_id, int floor_number, String category, int number_of_shops) {
-        this.mallId = mall_id;
-        this.floorNumber = floor_number;
+    public FloorDTO(int mallId, int floorNumber, String category, int numberOfShops) {
+        this.mallId = mallId;
+        this.floorNumber = floorNumber;
         this.category = category;
-        this.numberOfShops = number_of_shops;
+        this.numberOfShops = numberOfShops;
     }
 
     /**

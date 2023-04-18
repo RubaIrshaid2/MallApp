@@ -1,4 +1,4 @@
-package com.mall.mallapp.reposotry;
+package com.mall.mallapp.repository;
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
@@ -56,10 +56,10 @@ public class ItemRepo {
     /**
      * Gets a list of all items in the database for a given shop ID.
      *
-     * @param shop_id The ID of the shop whose items are being retrieved.
+     * @param shopId The ID of the shop whose items are being retrieved.
      * @return A list of all items in the database for the given shop ID.
      */
-    public List<Item> getItems(int shop_id) {
+    public List<Item> getItems(int shopId) {
 
         List<Item> ItemList = new ArrayList<Item>() ;
 
@@ -81,7 +81,7 @@ public class ItemRepo {
             System.out.println("Error: " + e.getMessage());
         }
         List<Item> filteredList = ItemList.stream()
-                .filter(item -> item.getShopId() == shop_id)
+                .filter(item -> item.getShopId() == shopId)
                 .collect(Collectors.toList());
         return filteredList;
     }
@@ -89,12 +89,12 @@ public class ItemRepo {
     /**
      * Gets an item with a given ID from the database.
      *
-     * @param item_id The ID of the item to retrieve.
+     * @param itemId The ID of the item to retrieve.
      * @return The item with the given ID, or null if the item does not exist in the database.
      */
-    public Item getItem(int item_id)
+    public Item getItem(int itemId)
     {
-        Key key = new Key(namespace,set, item_id);
+        Key key = new Key(namespace,set, itemId);
         Record record = AerospikeDB.getClient().get(null, key);
         if(record==null) {
             return null;
@@ -104,15 +104,15 @@ public class ItemRepo {
 
     /**
      *Adds a new item to the database with the given shop ID and returns the added item.
-     *@param shop_id the ID of the shop where the item is being added
+     *@param shopId the ID of the shop where the item is being added
      *@param item the item being added to the database
      *@return the added item
      */
-    public Item addItem(int shop_id , Item item)
+    public Item addItem(int shopId , Item item)
     {
-        System.out.println(shop_id);
+        System.out.println(shopId);
         item.setId(nextId);
-        item.setShopId(shop_id);
+        item.setShopId(shopId);
         WritePolicy writePolicy = new WritePolicy();
         writePolicy.sendKey = true;
         Key key = new Key(namespace , set, nextId);
@@ -127,14 +127,14 @@ public class ItemRepo {
      *
      * @param id the ID of the item being updated
      *
-     * @param shop_id the ID of the shop where the item is being updated
+     * @param shopId the ID of the shop where the item is being updated
      *
      * @param item the updated item information
      */
-    public void updateItem(int id ,int shop_id ,  Item item)
+    public void updateItem(int id ,int shopId ,  Item item)
     {
         Key key = new Key(namespace, set, id);
-        item.setShopId(shop_id);
+        item.setShopId(shopId);
         WritePolicy updatePolicy = new WritePolicy();
         updatePolicy.recordExistsAction = RecordExistsAction.UPDATE_ONLY;
 

@@ -1,8 +1,3 @@
-/**
- *The AerospikeDB class provides a wrapper for connecting to Aerospike database.
- *It contains a static method for getting a shared instance of the AerospikeClient object.
- */
-
 package com.mall.mallapp.dBConfig;
 import com.aerospike.client.AerospikeClient;
 /**

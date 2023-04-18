@@ -1,9 +1,9 @@
 package com.mall.mallapp.service;
 
-import com.mall.mallapp.DTO.ShopDTO;
+import com.mall.mallapp.dto.ShopDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.model.Shop;
-import com.mall.mallapp.reposotry.ShopRepo;
+import com.mall.mallapp.repository.ShopRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -37,8 +37,7 @@ class ShopServiceTest {
 
 
     @Test
-    void When_shopsAreExist_Expect_returningTheShops()
-    {
+    void When_shopsAreExist_Expect_returningTheShops() throws NotFoundException {
         List<Shop> list = new ArrayList<>();
         list.add(new Shop(1,1,1,"nike","desc","9-9"));
         list.add(new Shop(2,1,1,"addidas","desc","9-10" ));
@@ -70,8 +69,7 @@ class ShopServiceTest {
     }
 
     @Test
-    void when_2ShopssExist_expect_sizeEqualTo2()
-    {
+    void when_2ShopssExist_expect_sizeEqualTo2() throws NotFoundException {
         List<Shop> list = new ArrayList<>();
         list.add(new Shop(1,1,1,"nike","desc","9-9"));
         list.add(new Shop(2,1,1,"addidas","desc","9-10" ));
@@ -86,8 +84,7 @@ class ShopServiceTest {
     }
 
     @Test
-    void when_ShopsReturned_expect_beingShopDTO()
-    {
+    void when_ShopsReturned_expect_beingShopDTO() throws NotFoundException {
         List<Shop> list = new ArrayList<>();
         list.add(new Shop(1,1,1,"nike","desc","9-9"));
         list.add(new Shop(2,1,1,"addidas","desc","9-10" ));
@@ -110,8 +107,7 @@ class ShopServiceTest {
 
 
     @Test
-    void When_shopIdIsCorrect_expect_returningTheShop()
-    {
+    void When_shopIdIsCorrect_expect_returningTheShop() throws NotFoundException {
         Shop m = new Shop(2,1,1,"addidas","desc","9-10" );
         when(dataBaseService.getShop(1)).thenReturn(m);
 
@@ -122,8 +118,7 @@ class ShopServiceTest {
     }
 
     @Test
-    void when_getShopIsCalled_expect_returningDTOShop()
-    {
+    void when_getShopIsCalled_expect_returningDTOShop() throws NotFoundException {
         Shop s = new Shop(2,1,1,"addidas","desc","9-10" );
         when(dataBaseService.getShop(1)).thenReturn(s);
 

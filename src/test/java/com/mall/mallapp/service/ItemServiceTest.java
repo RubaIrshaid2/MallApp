@@ -1,9 +1,9 @@
 package com.mall.mallapp.service;
 
-import com.mall.mallapp.DTO.ItemDTO;
+import com.mall.mallapp.dto.ItemDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.model.Item;
-import com.mall.mallapp.reposotry.ItemRepo;
+import com.mall.mallapp.repository.ItemRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,8 +50,7 @@ class ItemServiceTest {
 
 
     @Test
-    void when_2itemsExist_expect_sizeEqualTo2()
-    {
+    void when_2itemsExist_expect_sizeEqualTo2() throws NotFoundException {
         List<Item> list = new ArrayList<>();
         list.add(new Item(1,1,"item 1 ",22,"desc",12));
         list.add(new Item(2,1,"item 2 ",22,"desc",12));
@@ -66,8 +65,7 @@ class ItemServiceTest {
     }
 
     @Test
-    void when_itemsReturned_expect_beingItemDTO()
-    {
+    void when_itemsReturned_expect_beingItemDTO() throws NotFoundException {
         List<Item> list = new ArrayList<>();
         list.add(new Item(1,1,"item 1 ",22,"desc",12));
         list.add(new Item(2,1,"item 2 ",22,"desc",12));
@@ -92,8 +90,7 @@ class ItemServiceTest {
 
 
     @Test
-    void when_getItemIsCalled_expect_returningDTOItem()
-    {
+    void when_getItemIsCalled_expect_returningDTOItem() throws NotFoundException {
         Item i = new Item(1,1,"item 1 ",22,"desc",12);
         when(dataBaseService.getItem(1)).thenReturn(i);
 

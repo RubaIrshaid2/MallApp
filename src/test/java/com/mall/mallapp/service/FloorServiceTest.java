@@ -1,9 +1,9 @@
 package com.mall.mallapp.service;
 
-import com.mall.mallapp.DTO.FloorDTO;
+import com.mall.mallapp.dto.FloorDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.model.Floor;
-import com.mall.mallapp.reposotry.FloorRepo;
+import com.mall.mallapp.repository.FloorRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,8 +84,7 @@ class FloorServiceTest {
     }
 
     @Test
-    void when_floorReturned_expect_beingfloorDTO()
-    {
+    void when_floorReturned_expect_beingfloorDTO() throws NotFoundException {
         List<Floor> list = new ArrayList<>();
         list.add(new Floor(1 , 1 , 1 ,"shoes",10));
         list.add(new Floor(2,1,3,"clothes",25));
@@ -108,23 +107,18 @@ class FloorServiceTest {
 
 
     @Test
-    void When_FloorIdIsCorrect_expect_returningTheFloor()
-    {
+    void When_FloorIdIsCorrect_expect_returningTheFloor() throws NotFoundException {
         Floor f = new Floor(1 , 1 , 1 ,"shoes",10);
         when(dataBaseService.getFloor(1,1)).thenReturn(f);
-
         FloorDTO Expected = new FloorDTO(1 , 1 ,"shoes",10);
         FloorDTO actual = fs.getFloor(1,1);
-
         assertEquals(Expected,actual);
     }
 
     @Test
-    void when_getfloorIsCalled_expect_returningDTOFloor()
-    {
+    void when_getfloorIsCalled_expect_returningDTOFloor() throws NotFoundException {
         Floor f = new Floor(1 , 1 , 1 ,"shoes",10);
         when(dataBaseService.getFloor(1,1)).thenReturn(f);
-
         assertInstanceOf(FloorDTO.class , fs.getFloor(1,1));
     }
 
@@ -133,14 +127,12 @@ class FloorServiceTest {
     {
         when(dataBaseService.getFloor(-1 , -1)).thenReturn(null);
         assertThrows(IllegalArgumentException.class ,()->fs.getFloor(-1,-1));
-
     }
     @Test
     void when_addingFloorWithEmptyFields_expect_IllegalArgumentException()
     {
         FloorDTO F = new FloorDTO( 1 , 1 ,"",10);
         assertThrows(IllegalArgumentException.class , ()->fs.addFloor(1,F));
-
     }
 
     @Test
@@ -160,14 +152,11 @@ class FloorServiceTest {
     void When_DeleteFloor_expect_returningDeletedsuccessfully()
     {
         when(dataBaseService.deleteFloor(1)).thenReturn("Deleted successfully");
-
         assertEquals("Deleted successfully",fs.deleteFloor(1));
     }
     @Test
     void deleteFloor() {
-
         assertThrows(IllegalArgumentException.class , ()->fs.deleteFloor(-1));
-
     }
 
 }

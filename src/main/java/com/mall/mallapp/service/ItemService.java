@@ -1,9 +1,9 @@
 package com.mall.mallapp.service;
-import com.mall.mallapp.DTO.ItemDTO;
+import com.mall.mallapp.dto.ItemDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.mapper.ItemMapperImpl;
 import com.mall.mallapp.model.Item;
-import com.mall.mallapp.reposotry.ItemRepo;
+import com.mall.mallapp.repository.ItemRepo;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -30,14 +30,14 @@ public class ItemService {
 
     /**
      * Returns a list of ItemDTO objects based on the given shop ID
-     * @param shop_id The ID of the shop
+     * @param shopId The ID of the shop
      * @return A list of ItemDTO objects
      * @throws NotFoundException If no Items are found for the given shop ID
      */
 
-    public List<ItemDTO> getItems(int shop_id) throws NotFoundException {
+    public List<ItemDTO> getItems(int shopId) throws NotFoundException {
 
-        List<Item> itemList = itemRepo.getItems(shop_id);
+        List<Item> itemList = itemRepo.getItems(shopId);
         List<ItemDTO> DTOList = new ArrayList<>();
 
         for(Item i : itemList)
@@ -50,16 +50,16 @@ public class ItemService {
 
     /**
      * Returns an ItemDTO object based on the given item ID
-     * @param item_id The ID of the item
+     * @param itemId The ID of the item
      * @return An ItemDTO object
      * @throws IllegalArgumentException If the item ID is less than 1
      * @throws NotFoundException If the Item with the given ID is not found
      */
-    public ItemDTO getItem(int item_id) throws IllegalArgumentException,NotFoundException
+    public ItemDTO getItem(int itemId) throws IllegalArgumentException,NotFoundException
     {
-        if(item_id < 1 )
+        if(itemId < 1 )
             throw new IllegalArgumentException("item id is not correct");
-        ItemDTO iDto =  itemMapper.ToDto(itemRepo.getItem(item_id));
+        ItemDTO iDto =  itemMapper.ToDto(itemRepo.getItem(itemId));
         if(iDto == null)
             throw new NotFoundException("Error : the Item not found");
         return iDto;
@@ -67,30 +67,30 @@ public class ItemService {
 
     /**
      * Adds a new Item to the specified shop
-     * @param shop_id The ID of the shop where the Item is to be added
+     * @param shopId The ID of the shop where the Item is to be added
      * @param item An ItemDTO object containing the data for the new Item
      * @return An ItemDTO object representing the newly added Item
      * @throws IllegalArgumentException If the shop ID is less than 1 or if the name of the new Item is empty or null
      */
-    public ItemDTO addItem(int shop_id , ItemDTO item) throws IllegalArgumentException
+    public ItemDTO addItem(int shopId , ItemDTO item) throws IllegalArgumentException
     {
-        if(shop_id < 1 || item.getName().isEmpty() || item.getName()==null)
+        if(shopId < 1 || item.getName().isEmpty() || item.getName()==null)
             throw new IllegalArgumentException("shop id or data of the new item is not correct");
-        return itemMapper.ToDto(itemRepo.addItem(shop_id, itemMapper.ToEntity(item)));
+        return itemMapper.ToDto(itemRepo.addItem(shopId, itemMapper.ToEntity(item)));
     }
 
     /**
      * Updates an existing Item in the specified shop
      * @param id The ID of the Item to be updated
-     * @param shop_id The ID of the shop where the Item to be updated is located
+     * @param shopId The ID of the shop where the Item to be updated is located
      * @param item An ItemDTO object containing the updated data for the Item
      * @throws IllegalArgumentException If the shop or item ID is less than 1 or if some data is missing
      */
-    public void updateItem(int id ,int shop_id , ItemDTO item)
+    public void updateItem(int id ,int shopId , ItemDTO item)
     {
-        if(id < 1 || shop_id< 1 || item.getName().isEmpty())
+        if(id < 1 || shopId< 1 || item.getName().isEmpty())
             throw new IllegalArgumentException("shop or item id or some data is not correct");
-        itemRepo.updateItem(id, shop_id , itemMapper.ToEntity(item));
+        itemRepo.updateItem(id, shopId , itemMapper.ToEntity(item));
     }
 
     /**

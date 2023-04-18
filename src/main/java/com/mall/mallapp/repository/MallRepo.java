@@ -1,4 +1,4 @@
-package com.mall.mallapp.reposotry;
+package com.mall.mallapp.repository;
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
@@ -18,15 +18,15 @@ import java.util.List;
 public class MallRepo {
 
     // The namespace where the data is stored in the Aerospike database
-    String namespace = "test";
+    private String namespace = "test";
     // The set where the Mall objects are stored in the Aerospike database
-    String set = "mall";
+    private String set = "mall";
     /**
      * The ID of the next Mall object that will be added to the Aerospike database
      */
-    int nextId;
+    private int nextId;
 
-    List<Mall> mallsInDataBase = new ArrayList<>();
+    private List<Mall> mallsInDataBase = new ArrayList<>();
     /**
      * Constructs a new MallRepo object.
      * Initializes the next_id field with the highest ID of the Mall objects already in the database.
@@ -59,7 +59,7 @@ public class MallRepo {
      * Retrieves a list of all Mall objects in the Aerospike database.
      * @return a list of all Mall objects in the Aerospike database
      */
-    public List<Mall> GetMalls()
+    public List<Mall> getMalls()
     {
         List<Mall> mallList = new ArrayList<Mall>() ;
         Statement statement = new Statement();
@@ -87,7 +87,7 @@ public class MallRepo {
      * @param id the ID of the Mall object to retrieve
      * @return the Mall object with the given ID, or null if no such object exists
      */
-    public Mall GetMall(int id)
+    public Mall getMall(int id)
     {
         Key key = new Key(namespace, set, id);
         Record record = AerospikeDB.getClient().get(null, key);
@@ -102,7 +102,7 @@ public class MallRepo {
      * @param mall the Mall object to add
      * @return the added Mall object
      */
-    public Mall AddMAll(Mall mall) throws ObjectExistsException
+    public Mall addMAll(Mall mall) throws ObjectExistsException
     {
         boolean found = mallsInDataBase.stream().anyMatch(m -> m.getName().equals(mall.getName()));
         if(!found) {
@@ -126,7 +126,7 @@ public class MallRepo {
 
      @param mall The updated mall object containing the new details.
      */
-    public void UpdateMall(int id , Mall mall)
+    public void updateMall(int id , Mall mall)
     {
         Key key = new Key(namespace, set, id);
         WritePolicy updatePolicy = new WritePolicy();
@@ -141,7 +141,7 @@ public class MallRepo {
      *
      * @return A string indicating whether the deletion was successful or not.
      */
-    public String DeleteMall(int id)
+    public String deleteMall(int id)
     {
         Key key = new Key(namespace,set, id);
         WritePolicy deletePolicy = new WritePolicy();

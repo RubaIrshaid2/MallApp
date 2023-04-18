@@ -1,4 +1,4 @@
-package com.mall.mallapp.reposotry;
+package com.mall.mallapp.repository;
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
@@ -29,7 +29,7 @@ public class FloorRepo {
     /**
      The next ID to use for a new record.
      */
-    private int next_id;
+    private int nextId;
     private List<Floor> floorsInDatabase = new ArrayList<>();
     /**
      *Constructs a new FloorRepo object and initializes the next ID by querying the Aerospike database for the highest
@@ -56,14 +56,14 @@ public class FloorRepo {
         catch (AerospikeException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        next_id = maxi+1;
+        nextId = maxi+1;
     }
     /**
      *Returns a list of all floors in the specified mall.
-     *@param mall_id the ID of the mall to retrieve floors from.
+     *@param mallId the ID of the mall to retrieve floors from.
      *@return a list of all floors in the specified mall.
      */
-    public List<Floor> getFloors(int mall_id)
+    public List<Floor> getFloors(int mallId)
     {
         List<Floor> FloorList = new ArrayList<Floor>() ;
 
@@ -76,7 +76,7 @@ public class FloorRepo {
             while (records.next()) {
                 Key key = records.getKey();
                 Record record = records.getRecord();
-                if(record.getInt("mall_id") == mall_id) {
+                if(record.getInt("mall_id") == mallId) {
                     Floor newFloor = new Floor(key.userKey.toInteger(), record.getInt("mall_id"), record.getInt("floor_number"), record.getString("category"), record.getInt("NumOfShops"));
                     FloorList.add(newFloor);
                 }
@@ -127,41 +127,41 @@ public class FloorRepo {
 
     /**
      *Adds a new floor to the specified mall.
-     * @param mall_id the ID of the mall to add the floor to.
+     * @param mallId the ID of the mall to add the floor to.
      * @param floor the floor to add.
      * @return the added floor.
      */
-    public Floor add_Floor(int mall_id ,Floor floor) throws ObjectExistsException
+    public Floor addFloor(int mallId , Floor floor) throws ObjectExistsException
     {
-        boolean found = floorsInDatabase.stream().anyMatch(f -> f.getFloorNumber() == floor.getFloorNumber() && f.getMallId() == mall_id);
+        boolean found = floorsInDatabase.stream().anyMatch(f -> f.getFloorNumber() == floor.getFloorNumber() && f.getMallId() == mallId);
 
         if(!found) {
-            floor.setId(next_id);
-            floor.setMallId(mall_id);
+            floor.setId(nextId);
+            floor.setMallId(mallId);
             WritePolicy writePolicy = new WritePolicy();
             writePolicy.sendKey = true;
-            Key key = new Key(namespace, set, next_id);
-            bins_update_create(floor, key, writePolicy);
-            next_id++;
+            Key key = new Key(namespace, set, nextId);
+            binsUpdateCreate(floor, key, writePolicy);
+            nextId++;
             return floor;
         }
         throw new ObjectExistsException("the Floor is already exist");
     }
     /**
      * Updates the floor with the specified ID and mall ID in the specified mall.
-     * @param mall_id the ID of the mall the floor belongs to.
+     * @param mallId the ID of the mall the floor belongs to.
      * @param id the ID of the floor.
      * @param floor the updated floor object.
      */
-    public void updateFloor(int mall_id ,int id , Floor floor)
+    public void updateFloor(int mallId ,int id , Floor floor)
     {
-        floor.setMallId(mall_id);
+        floor.setMallId(mallId);
         Key key = new Key(namespace, set, id);
 
         WritePolicy updatePolicy = new WritePolicy();
         updatePolicy.recordExistsAction = RecordExistsAction.UPDATE_ONLY;
 
-        bins_update_create(floor, key, updatePolicy);
+        binsUpdateCreate(floor, key, updatePolicy);
     }
     /**
      * Deletes the floor with the specified ID.
@@ -183,7 +183,7 @@ public class FloorRepo {
      * @param key the key to use for the update or create operation.
      * @param Policy the write policy to use for the update or create operation.
      */
-    private void bins_update_create(Floor floor, Key key, WritePolicy Policy) {
+    private void binsUpdateCreate(Floor floor, Key key, WritePolicy Policy) {
         Bin floor_number = new Bin("floor_number" , floor.getFloorNumber());
         Bin category = new Bin("category" , floor.getCategory());
         Bin NumOfShops = new Bin ("NumOfShops" , floor.getNumberOfShops());

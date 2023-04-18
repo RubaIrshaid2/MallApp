@@ -1,6 +1,6 @@
 package com.mall.mallapp.resources;
 
-import com.mall.mallapp.DTO.MallDTO;
+import com.mall.mallapp.dto.MallDTO;
 import com.mall.mallapp.exception.NotFoundException;
 import com.mall.mallapp.exception.ObjectExistsException;
 import com.mall.mallapp.service.MallService;

@@ -3,7 +3,6 @@ package com.mall.mallapp.model;
  *  The {@code Floor} class represents a floor in a shopping mall.
  *  It contains information about the floor such as its ID, mall ID,
  *  floor number, category and number of shops.
- *  <p>
  *  This class provides getters and setters for accessing and modifying
  *  its fields.
  */
@@ -24,17 +23,17 @@ public class Floor {
      * Constructs a new {@code Floor} object with the given values.
      *
      * @param id the ID of the floor
-     * @param mall_id the ID of the mall that the floor belongs to
-     * @param floor_number the number of the floor
+     * @param mallId the ID of the mall that the floor belongs to
+     * @param floorNumber the number of the floor
      * @param category the category of the floor (e.g. food court, retail)
-     * @param number_of_shops the number of shops on the floor
+     * @param numberOfShops the number of shops on the floor
      */
-    public Floor(int id,int mall_id , int floor_number, String category, int number_of_shops) {
+    public Floor(int id,int mallId , int floorNumber, String category, int numberOfShops) {
         this.id = id;
-        this.mallId = mall_id;
-        this.floorNumber = floor_number;
+        this.mallId = mallId;
+        this.floorNumber = floorNumber;
         this.category = category;
-        this.numberOfShops = number_of_shops;
+        this.numberOfShops = numberOfShops;
     }
 
     /**
