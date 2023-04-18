@@ -29,7 +29,6 @@ public class MallResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMalls(){
-
         try {
             List<MallDTO> mallList = ms.getAllMalls();
 

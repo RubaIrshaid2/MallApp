@@ -4,6 +4,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationPath("/api")
-public class mallAppMain extends Application {
+public class MallAppMain extends Application {
+
 
 }
