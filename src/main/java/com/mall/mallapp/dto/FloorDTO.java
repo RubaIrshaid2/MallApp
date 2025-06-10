@@ -18,7 +18,7 @@ public class FloorDTO {
     /**
      * Constructor for creating an instance of the class with provided values.
      *
-     * @param mallId the ID of the mall where the floor is located
+     * @param mallId The ID of the mall where the floor is located
      * @param floorNumber the floor number
      * @param category The category of the floor
      * @param numberOfShops the number of shops in the floor
