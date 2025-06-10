@@ -21,7 +21,7 @@ public class FloorDTO {
      * @param mallId the ID of the mall where the floor is located
      * @param floorNumber the floor number
      * @param category the category of the floor
-     * @param numberOfShops the number of shops on the floor
+     * @param numberOfShops the number of shops in the floor
      */
     public FloorDTO(int mallId, int floorNumber, String category, int numberOfShops) {
         this.mallId = mallId;
