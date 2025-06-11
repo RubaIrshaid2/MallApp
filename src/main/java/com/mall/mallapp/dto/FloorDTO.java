@@ -11,7 +11,7 @@ public class FloorDTO {
     private String category;
     private int numberOfShops;
     /**
-     * Default Constructor for creating an empty instance of the class.
+     * Default Constructor for creating An empty instance of the class.
      */
     public FloorDTO(){}
 
